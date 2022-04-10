@@ -5,9 +5,9 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom"
 import React from "react"
-import Home from "./Home"
-import Login from "./Login"
-import Panel from "./Panel"
+import Home from "../pages/home/Home"
+import Login from "../pages/login/Login"
+import Panel from "../pages/panel/Panel"
 
 function App() {
   return (
