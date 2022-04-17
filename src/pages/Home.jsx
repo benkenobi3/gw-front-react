@@ -34,22 +34,22 @@ function Home() {
             </Row>
             <Row align="bottom" className="text">
                 <Col span={24} md={0} align="middle">
-                    <h1>Вам нужен</h1>
+                    <h1 style={{marginTop: '10vh'}}>Вам нужен</h1>
                 </Col>
                 <Col span={0} md={12} align="right">
                     <h1>Вам нужен</h1>
                 </Col>
                 <Col span={24} md={0} align="middle">
-                    <h1><span>{specs[spec_id]}</span></h1>
+                    <h1><span>{specs[spec_id]}?</span></h1>
                 </Col>
                 <Col span={0} md={12} align="left">
-                    <h1>{"\u00A0"}<span>{specs[spec_id]}</span></h1>
+                    <h1>{"\u00A0"}<span>{specs[spec_id]}?</span></h1>
                 </Col>
             </Row>
             <Row justify="space-around" align="middle">
                 <Col>
                     <Link to="/panel">
-                        <Button type="primary" size="large" style={{fontSize: '2em', height: '100%'}}>
+                        <Button type="primary" size="large" style={{fontSize: '1.8em', height: '100%'}}>
                             Подать заявку
                         </Button>
                     </Link>
