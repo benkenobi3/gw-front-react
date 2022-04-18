@@ -5,6 +5,7 @@ import "./Home.sass"
 
 
 function Home() {
+    const token = localStorage.getItem('a')
     
     const specs = ['сантехник', 'плотник', 'электрик']
     const [spec_id, setSpecId] = useState(0)
@@ -16,7 +17,7 @@ function Home() {
         }, 2000)
 
         return () => clearInterval(interval)
-    }, [])
+    }, [specs.length])
 
     return (
         <div className="home">
@@ -25,11 +26,20 @@ function Home() {
                     <Link to="/"><div className="logo"></div></Link>
                 </Col>
                 <Col>
-                    <Link to="/login">
-                        <Button type="primary" size="large" style={{fontSize: '1.4em', height: '100%'}}>
-                            Войти
-                        </Button>
-                    </Link>
+                    {token ? (
+                        <Link to="/login">
+                            <Button type="primary" size="large" style={{fontSize: '1.4em', height: '100%'}}>
+                                Выйти
+                            </Button>
+                        </Link>
+                        ) : (
+                        <Link to="/panel">
+                            <Button type="primary" size="large" style={{fontSize: '1.4em', height: '100%'}}>
+                                Войти
+                            </Button>
+                        </Link>
+                        )
+                    }
                 </Col>
             </Row>
             <Row align="bottom" className="text">
@@ -57,7 +67,7 @@ function Home() {
             </Row>
             <div className="wave"></div>
         </div>
-    );
+    )
 }
 
 export default Home

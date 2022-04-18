@@ -3,8 +3,10 @@ import {Row, Col, Button, Form, Input} from "antd"
 
 import "./Login.sass"
 import {login} from "../auth/login"
+import {useNavigate, useSearchParams} from "react-router-dom"
 
 function Login() {
+    localStorage.removeItem('a')
 
     const wrapperLayout = {
         wrapperCol: {
@@ -18,12 +20,15 @@ function Login() {
         wrapperCol: {xs: {span: 24}, sm: {span: 16}},
     }
 
+    const navigate = useNavigate()
     const [authError, setAuthError] = useState('')
-
+    const [params, _] = useSearchParams()
+    
     const handleFinish = values => {
         setAuthError('')
         login(values.username, values.password).then((_)=> {
             console.log('auth success')
+            params.get('next') ? navigate('../' + params.get('next'), {replace: true}) : navigate(-1)
         }).catch(()=>{
             console.log('auth failed')
             setAuthError('Неправильный логин или пароль!')
@@ -54,15 +59,15 @@ function Login() {
                         </Form.Item>
 
                         <Form.Item {...wrapperLayout}>
-                            <span className="error">{authError != '' && authError}</span>
+                            <span className="error">{authError !== '' && authError}</span>
                         </Form.Item>
-                        
+
                     </Form>
                 </Col>
             </Row>
             <div className="wave"></div>
         </div>
-    );
+    )
 }
 
 export default Login
