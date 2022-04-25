@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {Row, Col, Button} from "antd"
 import {Link} from "react-router-dom"
+
 import "./Home.sass"
+import Header from "../components/Header"
 
 
 function Home() {
-    const token = localStorage.getItem('a')
-    
     const specs = ['сантехник', 'плотник', 'электрик']
     const [spec_id, setSpecId] = useState(0)
 
@@ -21,27 +21,7 @@ function Home() {
 
     return (
         <div className="home">
-            <Row justify="space-around" align="middle" className="header">
-                <Col>
-                    <Link to="/"><div className="logo"></div></Link>
-                </Col>
-                <Col>
-                    {token ? (
-                        <Link to="/login">
-                            <Button type="primary" size="large" style={{fontSize: '1.4em', height: '100%'}}>
-                                Выйти
-                            </Button>
-                        </Link>
-                        ) : (
-                        <Link to="/panel">
-                            <Button type="primary" size="large" style={{fontSize: '1.4em', height: '100%'}}>
-                                Войти
-                            </Button>
-                        </Link>
-                        )
-                    }
-                </Col>
-            </Row>
+            <Header/>
             <Row align="bottom" className="text">
                 <Col span={24} md={0} align="middle">
                     <h1 style={{marginTop: '10vh'}}>Вам нужен</h1>

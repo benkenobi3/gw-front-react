@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom"
 import React from "react"
-import Protected from "../auth/Protected"
+import Protected from "../components/Protected"
 
 import "./App.sass"
 import Home from "../pages/Home"
@@ -16,8 +16,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />}/>
-        <Route path="/login" element={<Login />}/>
-        <Route path="/panel"
+        <Route path="login" element={<Login />}/>
+        <Route path="panel/*"
           element={
             <Protected redirect="/login?next=panel">
               <Panel />

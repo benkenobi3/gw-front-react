@@ -2,11 +2,14 @@ import {useState} from "react"
 import {Row, Col, Button, Form, Input} from "antd"
 
 import "./Login.sass"
-import {login} from "../auth/login"
+import {login} from "../auth/auth"
+import {getUser} from "../auth/user"
+import Header from "../components/Header"
 import {useNavigate, useSearchParams} from "react-router-dom"
 
+
 function Login() {
-    localStorage.removeItem('a')
+    const user = getUser()
 
     const wrapperLayout = {
         wrapperCol: {
@@ -37,8 +40,10 @@ function Login() {
 
     return (
         <div className="login">
-            <Row justify="center" align="middle" className="content">
-                <Col lg={{push: 5}}>
+            <Header />
+            <Row justify="space-around" align="middle" className="content">
+                <Col xs={0} sm={1}></Col>
+                <Col sm={{pull: 1}} style={user ? {display: "none"} : {}}>
                     <Form name="basic" size="large" {...formItemLayout}
                         onFinish={handleFinish}>
 
@@ -63,6 +68,9 @@ function Login() {
                         </Form.Item>
 
                     </Form>
+                </Col>
+                <Col style={user ? {} : {display: "none"}}>
+                    <h1>Вы уже вошли</h1>
                 </Col>
             </Row>
             <div className="wave"></div>

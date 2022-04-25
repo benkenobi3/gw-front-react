@@ -11,7 +11,7 @@ const login = (username, password) => {
     })
 }
 
-const refreshToken = () => {
+const refresh = () => {
     const token = localStorage.getItem('r')
     if (!token) {
         throw Error('refresh token error')
@@ -25,4 +25,10 @@ const refreshToken = () => {
     })
 }
 
-export {login, refreshToken}
+const logout = () => {
+    localStorage.removeItem('a')
+    localStorage.removeItem('r')
+    window.location.reload()
+}
+
+export {login, refresh, logout}

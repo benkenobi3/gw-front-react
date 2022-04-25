@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Service } from 'axios-middleware'
 
-import {refreshToken} from './login'
+import {refresh} from './auth'
 
 const service = new Service(axios);
 
@@ -24,7 +24,7 @@ service.register({
 
   onResponseError(err) {
     if (err.response.status === 401 && err.config && !err.config.hasRetriedRequest) {
-      token = refreshToken()
+      token = refresh()
       return axios({
           ...err.config,
           hasRetriedRequest: true,
