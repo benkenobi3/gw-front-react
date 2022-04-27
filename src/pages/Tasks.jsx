@@ -1,6 +1,8 @@
-function Tasks(props) {
+import "./Tasks.sass"
+
+function Tasks() {
     return (
-        <div style={{width: "100%", height: "100%"}} className={props.className}></div>
+        <>T</>
     )
 }
 

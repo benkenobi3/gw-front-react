@@ -13,7 +13,9 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { DropdownUser } from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
+import { Docs } from "../pages/Docs"
 import { Tasks } from "../pages/Tasks"
+import { Employers } from "../pages/Employers"
 
 const { Content, Footer, Sider } = Layout;
 
@@ -22,8 +24,15 @@ function Panel() {
 
     const user = getUser()
 
+    const titles = {
+        "0": <><CarryOutOutlined /> Задачи</>,
+        "1": <><TeamOutlined /> Сотрудники</>,
+        "2": <><FileOutlined /> Отчеты</>
+    }
+
     const [collapsed, setCollapsed] = useState(false)
-   
+    const [contentTitle, setContentTitle] = useState(titles['0'])
+
     return (
         <Layout className="panel">
             <Sider trigger={null} collapsible collapsed={collapsed} className="panel-slider">
@@ -35,7 +44,12 @@ function Panel() {
                         style={{paddingLeft: collapsed * 16}}
                     />
                 </Link>
-                <Menu theme="dark" defaultSelectedKeys={['0']} mode="inline">
+                <Menu
+                    theme="dark" 
+                    defaultSelectedKeys={['0']} 
+                    mode="inline"
+                    onClick={({key}) => setContentTitle(titles[key])}
+                >
                     <Menu.Item key="0" icon={<CarryOutOutlined />}>
                         <Link to="/panel/tasks">Задачи</Link>
                     </Menu.Item>
@@ -57,11 +71,13 @@ function Panel() {
                     ]}
                 />
                 <Content className="panel-content">
-                    
+                    <div className='content-title'>
+                        {contentTitle}
+                    </div>
                     <Routes>
                         <Route index path="tasks" element={<Tasks />}/>
-                        <Route path="employers" element={<div></div>}/>
-                        <Route path="reports" element={<div></div>}/>
+                        <Route path="employers" element={<Employers />}/>
+                        <Route path="reports" element={<Docs />}/>
                     </Routes>
                 </Content>
             </Layout>
