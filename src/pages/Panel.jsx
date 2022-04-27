@@ -13,7 +13,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { DropdownUser } from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
-import { Docs } from "../pages/Docs"
+import { Reports } from "./Reports"
 import { Tasks } from "../pages/Tasks"
 import { Employers } from "../pages/Employers"
 
@@ -36,14 +36,12 @@ function Panel() {
     return (
         <Layout className="panel">
             <Sider trigger={null} collapsible collapsed={collapsed} className="panel-slider">
-                <Link to="/panel">
-                    <img 
-                        alt=""
-                        className="logo-image" 
-                        src="http://localhost:3000/logo.png" 
-                        style={{paddingLeft: collapsed * 16}}
-                    />
-                </Link>
+                <img
+                    alt=""
+                    className="logo-image" 
+                    src="http://localhost:3000/logo.png" 
+                    style={{paddingLeft: collapsed * 16}}
+                />
                 <Menu
                     theme="dark" 
                     defaultSelectedKeys={['0']} 
@@ -74,11 +72,14 @@ function Panel() {
                     <div className='content-title'>
                         {contentTitle}
                     </div>
-                    <Routes>
-                        <Route index path="tasks" element={<Tasks />}/>
-                        <Route path="employers" element={<Employers />}/>
-                        <Route path="reports" element={<Docs />}/>
-                    </Routes>
+                    <div className='content-routes'>
+                        <Routes>
+                            <Route path="" element={<Tasks />}/>
+                            <Route path="tasks" index element={<Tasks />}/>
+                            <Route path="employers" element={<Employers />}/>
+                            <Route path="reports" element={<Reports />}/>
+                        </Routes>
+                    </div>
                 </Content>
             </Layout>
         </Layout>
