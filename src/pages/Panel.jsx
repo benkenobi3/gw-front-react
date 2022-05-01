@@ -14,7 +14,7 @@ import { DropdownUser } from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
 import { Reports } from "./Reports"
-import { Tasks } from "../pages/Tasks"
+import { Orders } from "../pages/Orders"
 import { Employers } from "../pages/Employers"
 
 const { Content, Footer, Sider } = Layout;
@@ -25,7 +25,7 @@ function Panel() {
     const user = getUser()
 
     const titles = {
-        "0": <><CarryOutOutlined /> Задачи</>,
+        "0": <><CarryOutOutlined /> Заявки</>,
         "1": <><TeamOutlined /> Сотрудники</>,
         "2": <><FileOutlined /> Отчеты</>
     }
@@ -49,7 +49,7 @@ function Panel() {
                     onClick={({key}) => setContentTitle(titles[key])}
                 >
                     <Menu.Item key="0" icon={<CarryOutOutlined />}>
-                        <Link to="/panel/tasks">Задачи</Link>
+                        <Link to="/panel/orders">Заявки</Link>
                     </Menu.Item>
                     <Menu.Item key="1" icon={<TeamOutlined />}>
                         <Link to="/panel/employers">Сотрудники</Link>
@@ -65,7 +65,7 @@ function Panel() {
                     onBack={() => setCollapsed((c) => !c)}
                     backIcon={<DoubleLeftOutlined className="text-color"/>}
                     extra={[
-                        <DropdownUser className="text-color" user={user}/>
+                        <DropdownUser className="text-color" user={user} key="dropdown-user"/>
                     ]}
                 />
                 <Content className="panel-content">
@@ -74,8 +74,8 @@ function Panel() {
                     </div>
                     <div className='content-routes'>
                         <Routes>
-                            <Route path="" element={<Tasks />}/>
-                            <Route path="tasks" index element={<Tasks />}/>
+                            <Route path="" element={<Orders />}/>
+                            <Route path="orders" index element={<Orders />}/>
                             <Route path="employers" element={<Employers />}/>
                             <Route path="reports" element={<Reports />}/>
                         </Routes>

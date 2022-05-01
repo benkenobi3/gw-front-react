@@ -18,7 +18,7 @@ function Header() {
             </Col>
             <Col>
                 {user ? (
-                    <DropdownUser user={user}/>    
+                    <DropdownUser user={user} key="dropdown-user"/>    
                     ) : (
                     <Link to="/panel">
                         <Button type="primary" size="large" className="login-btn">

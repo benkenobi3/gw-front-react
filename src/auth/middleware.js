@@ -23,8 +23,9 @@ service.register({
   },
 
   onResponseError(err) {
+    console.log('Ошибка нахуй')
     if (err.response.status === 401 && err.config && !err.config.hasRetriedRequest) {
-      token = refresh()
+      const token = refresh()
       return axios({
           ...err.config,
           hasRetriedRequest: true,
@@ -34,7 +35,7 @@ service.register({
           }
         })
     }
-    throw err;
+    else {throw err}
   },
 
 })
