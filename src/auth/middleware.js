@@ -23,9 +23,10 @@ service.register({
   },
 
   onResponseError(err) {
-    console.log('Ошибка нахуй')
     if (err.response.status === 401 && err.config && !err.config.hasRetriedRequest) {
-      const token = refresh()
+      refresh()
+
+      const token = localStorage.getItem('a')
       return axios({
           ...err.config,
           hasRetriedRequest: true,

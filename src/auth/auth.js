@@ -12,8 +12,6 @@ const login = (username, password) => {
 }
 
 const refresh = () => {
-    console.log('Рефреш нахуй')
-
     const token = localStorage.getItem('r')
     if (!token) {
         throw Error('refresh token error')
@@ -22,11 +20,8 @@ const refresh = () => {
     axios.post(AUTH_REFRESH_URL, {
         'refresh': token
     }).then((response) => {
-        console.log('Нормально рефрешнул' + response.data.access)
         localStorage.setItem('a', response.data.access)
-        return response.data.access
     }).catch((err) => {
-        console.log('В пизду тебя')
         logout()
     }) 
 }

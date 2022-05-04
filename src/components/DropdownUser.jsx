@@ -31,4 +31,4 @@ function DropdownUser(props) {
     )
 }
 
-export { DropdownUser }
+export default DropdownUser

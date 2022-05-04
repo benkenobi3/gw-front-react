@@ -1,10 +1,12 @@
 import "./Orders.sass"
-import axios from 'axios'
-import { useState, useEffect } from "react"
+import StatusTag from "../components/StatusTag"
 import { ORDERS_ALL_URL } from "../settings"
-import { Table, Tag } from "antd"
-import { STATUS_MAPPING } from "../settings"
+
+import axios from 'axios'
 import { Link } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Table, Row, Col, List } from "antd"
+
 
 function Orders() {
     const [orders, setOrders] = useState([])
@@ -21,53 +23,43 @@ function Orders() {
         fetchOrders();
     }, [])
 
-    const columns = [
-        {
-            title: 'Заголовок',
-            dataIndex: 'title',
-            key: 'key',
-            render: (title, key) => {
-                return (
-                    <Link to={`/panel/orders/${key}`}>{title}</Link>
-                )
-            }
-        },
-
-        {
-            title: 'Описание',
-            dataIndex: 'description',
-            key: 'description',
-            render: description => {
-                return (
-                    <div className='truncate-text'>
-                        {description}
-                    </div>
-                )
-            }
-        },
-
-        {
-            title: 'Статус',
-            dataIndex: 'status',
-            key: 'status',
-            render: status => {
-                let color = status === 'rejected' ? 'darkred' : 'green'
-                color = status === 'info_required' ? 'orange' : color
-                color = status === 'done' ? 'darkgreen' : color
-
-                return (
-                    <Tag color={color} key={status}>
-                        {STATUS_MAPPING[status]}
-                    </Tag>
-                )
-            }
-        },
-    ]
-
     return (
-        <div className="main-table">
-            <Table dataSource={orders} columns={columns} ></Table>
-        </div>
+        
+        <Row className="orders">
+            <Col xs={0} lg={24}>
+                <Table dataSource={orders}>
+                    <Table.Column title={<div className="table-header">Заголовок</div>} key='key' render={order => {
+                        return <Link to={`/panel/orders/${order.key}`}>{order.title}</Link>
+                    }}/>
+                    <Table.Column title={<div className="table-header">Описание</div>} dataIndex='description' key='key' render={description => {
+                        return <div className='truncate-text'>{description}</div>
+                    }}/>
+                    <Table.Column title={<div className="table-header">Заявитель</div>} dataIndex='customer' key='key' render={customer => {
+                        return <Link to={`/user/${customer.id}`}>{customer.first_name} {customer.last_name}</Link> 
+                    }}/>
+                    <Table.Column title={<div className="table-header">Исполнитель</div>} dataIndex='performer' key='key' render={performer => {
+                        return performer ? <Link to={`/user/${performer.id}`}>{performer.first_name} {performer.last_name}</Link> : 'Не назначен'
+                    }}/>
+                    <Table.Column title={<div className="table-header">Статус</div>} dataIndex='status' key='key' render={StatusTag}/>
+                </Table>
+            </Col>
+            <Col xs={24} lg={0}>
+                <List dataSource={orders} renderItem={item => (
+                    <List.Item actions={[StatusTag(item.status)]}>
+                        <List.Item.Meta
+                            title={item.title}
+                            description={
+                                <div className='truncate-text-container'>
+                                    <div className='truncate-text-list'>
+                                        {item.description}
+                                    </div>
+                                </div>
+                            }
+                        />
+                    </List.Item>
+                )}/>
+            </Col>
+        </Row>
     )
 }
 

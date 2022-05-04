@@ -6,11 +6,11 @@ import {
   TeamOutlined,
   DoubleLeftOutlined,
 } from '@ant-design/icons';
-import { PageHeader, Button, Layout, Menu } from 'antd';
+import { PageHeader, Layout, Menu } from 'antd';
 import { useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom';
 
-import { DropdownUser } from "../components/DropdownUser"
+import DropdownUser from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
 import { Reports } from "./Reports"

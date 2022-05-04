@@ -1,7 +1,7 @@
 import {Row, Col, Button} from "antd"
 import {Link} from "react-router-dom"
 
-import { DropdownUser } from "./DropdownUser"
+import DropdownUser from "./DropdownUser"
 import { getUser } from "../auth/user"
 import "./Header.sass"
 
