@@ -6,4 +6,4 @@ function Reports() {
     )
 }
 
-export { Reports }
+export default Reports

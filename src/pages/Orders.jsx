@@ -24,10 +24,9 @@ function Orders() {
     }, [])
 
     return (
-        
         <Row className="orders">
             <Col xs={0} lg={24}>
-                <Table dataSource={orders}>
+                <Table dataSource={orders} pagination={{ position: ['bottomCenter'] }}>
                     <Table.Column title={<div className="table-header">Заголовок</div>} key='key' render={order => {
                         return <Link to={`/panel/orders/${order.key}`}>{order.title}</Link>
                     }}/>
@@ -63,4 +62,4 @@ function Orders() {
     )
 }
 
-export { Orders }
+export default Orders

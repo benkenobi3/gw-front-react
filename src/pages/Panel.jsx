@@ -13,9 +13,10 @@ import { Link, Route, Routes } from 'react-router-dom';
 import DropdownUser from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
-import { Reports } from "./Reports"
-import { Orders } from "../pages/Orders"
-import { Employers } from "../pages/Employers"
+import  Reports  from "./Reports"
+import  Order  from "../pages/Order"
+import  Orders  from "../pages/Orders"
+import  Employers  from "../pages/Employers"
 
 const { Content, Footer, Sider } = Layout;
 
@@ -76,6 +77,7 @@ function Panel() {
                         <Routes>
                             <Route path="" element={<Orders />}/>
                             <Route path="orders" index element={<Orders />}/>
+                            <Route path="orders/:orderId" index element={<Order />}/>
                             <Route path="employers" element={<Employers />}/>
                             <Route path="reports" element={<Reports />}/>
                         </Routes>
