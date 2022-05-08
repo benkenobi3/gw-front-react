@@ -45,7 +45,7 @@ function Login() {
                 <Col xs={0} sm={1}></Col>
                 <Col sm={{pull: 1}} style={user ? {display: "none"} : {}}>
                     <Form name="basic" size="large" {...formItemLayout}
-                        onFinish={handleFinish}>
+                        onFinish={handleFinish} requiredMark={false}>
 
                         <Form.Item label="Логин" name="username"
                             rules={[{ required: true, message: 'Пожалуйста, введите логин!'}]}>

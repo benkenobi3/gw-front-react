@@ -2,7 +2,7 @@ import { Tag } from "antd"
 import { STATUS_MAPPING } from "../settings"
 
 
-function StatusTag(status) {
+function StatusTag({status}) {
     let color = status === 'rejected' ? 'darkred' : 'green'
     color = status === 'info_required' ? 'orange' : color
     color = status === 'done' ? 'darkgreen' : color
