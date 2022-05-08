@@ -1,26 +1,16 @@
 import "./Orders.sass"
 import StatusTag from "../components/StatusTag"
-import { ORDERS_ALL_URL } from "../settings"
-
-import axios from 'axios'
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { Table, Row, Col, List } from "antd"
-
+import { fetchOrders } from "../requests"
 
 function Orders() {
     const [orders, setOrders] = useState([])
 
-    const fetchOrders = async () => {
-        const { data } = await axios.get(ORDERS_ALL_URL)
-        data.forEach((order) => order.key = order.id)
-        const orders = data
-        setOrders(orders)
-        console.log(orders)
-    }
-
-    useEffect(() => {
-        fetchOrders();
+    useEffect(async () => {
+        const data = await fetchOrders();
+        setOrders(data)
     }, [])
 
     return (

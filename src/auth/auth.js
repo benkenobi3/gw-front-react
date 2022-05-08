@@ -1,14 +1,16 @@
 import axios from 'axios'
 import {AUTH_URL, AUTH_REFRESH_URL} from '../settings'
 
-const login = (username, password) => {
-    return axios.post(AUTH_URL, {
+const login = async (username, password) => {
+    const response = await axios.post(AUTH_URL, {
         username,
         password
-    }).then((response) => {
+    })
+    if (response.status === 200) {
         localStorage.setItem('a', response.data.access)
         localStorage.setItem('r', response.data.refresh)
-    })
+    }
+    return response
 }
 
 const refresh = () => {

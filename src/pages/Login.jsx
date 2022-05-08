@@ -27,15 +27,18 @@ function Login() {
     const [authError, setAuthError] = useState('')
     const [params, _] = useSearchParams()
     
-    const handleFinish = values => {
+    const handleFinish = async values => {
+
         setAuthError('')
-        login(values.username, values.password).then((_)=> {
+
+        await login(values.username, values.password).then(_ => {
             console.log('auth success')
             params.get('next') ? navigate('../' + params.get('next'), {replace: true}) : navigate(-1)
-        }).catch(()=>{
+        }).catch(_ => {
             console.log('auth failed')
             setAuthError('Неправильный логин или пароль!')
         })
+
     }
 
     return (

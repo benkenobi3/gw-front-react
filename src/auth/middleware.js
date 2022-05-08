@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Service } from 'axios-middleware'
+import { AUTH_URL } from '../settings';
 
 import {refresh} from './auth'
 
@@ -23,9 +24,9 @@ service.register({
   },
 
   onResponseError(err) {
-    if (err.response.status === 401 && err.config && !err.config.hasRetriedRequest) {
+    if (err.response.status === 401 && err.config && 
+      !err.config.hasRetriedRequest && err.response.config.url != AUTH_URL) {
       refresh()
-
       const token = localStorage.getItem('a')
       return axios({
           ...err.config,

@@ -1,24 +1,16 @@
 import "./Employers.sass"
-import axios from "axios"
-import { EMPLOYERS_ALL_URL } from "../settings"
 import { Row, Col, Table, List} from "antd"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import BusyTag from "../components/BusyTag"
+import { fetchEmployers } from "../requests"
 
 function Employers() {
     const [employers, setEmployers] = useState([])
 
-    const fetchEmployers = async () => {
-        const { data } = await axios.get(EMPLOYERS_ALL_URL)
-        data.forEach((order) => order.key = order.id)
-        const employers = data
-        setEmployers(employers)
-        console.log(employers)
-    }
-
-    useEffect(() => {
-        fetchEmployers();
+    useEffect(async () => {
+        const data = await fetchEmployers();
+        setEmployers(data)
     }, [])
 
     const specNames = {

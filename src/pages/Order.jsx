@@ -1,10 +1,9 @@
 import "./Order.sass"
-import axios from "axios"
 import { Row, Col, PageHeader, Form, Input, Select, Button } from "antd"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { LeftOutlined } from "@ant-design/icons"
-import { ORDERS_ORDER_URL } from "../settings"
+import { fetchOrder } from "../requests"
 import StatusTag from "../components/StatusTag"
 
 
@@ -14,16 +13,9 @@ function Order() {
     const [order, setOrder] = useState({})
     const [edit, setEdit] = useState(false)
 
-    const fetchOrder = async () => {
-        const { data } = await axios.get(ORDERS_ORDER_URL(orderId))
-        data.key = data.id
-        const order = data
-        setOrder(order)
-        console.log(order)
-    }
-
-    useEffect(() => {
-        fetchOrder();
+    useEffect(async () => {
+        const data = await fetchOrder(orderId)
+        setOrder(data)
     }, [])
 
     const fields = [
@@ -38,7 +30,7 @@ function Order() {
         wrapperCol: {xs: {span: 24}, sm: {span: 20}, xxl: {span: 23}},
     }
 
-    const onEditCancel = () => {
+    const onEditOrCancel = () => {
         setEdit(edit => !edit)
     }
 
@@ -54,7 +46,7 @@ function Order() {
             <Col xs={24} md={18} xxl={12} >
                 <PageHeader className="order-page-header back-color"
                     ghost={false}
-                    title={<div className="text-color"></div>}
+                    title={<div className="text-color">Заявка №{order.id}</div>}
                     backIcon={<LeftOutlined className="text-color"/>}
                     onBack={() => window.history.back()}
                 />
@@ -89,7 +81,7 @@ function Order() {
                             size="default" 
                             type="dashed" 
                             className="button-back-color"
-                            onClick={onEditCancel}
+                            onClick={onEditOrCancel}
                         >
                             {edit ? 'Отмена' : 'Редактировать'}    
                         </Button>
