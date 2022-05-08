@@ -25,16 +25,17 @@ function Panel() {
 
     const user = getUser()
 
-    const location = useLocation()
+    const loc = window.location
+    console.log(loc)
 
     const titles = {
-        "/panal/orders": <><CarryOutOutlined /> Заявки</>,
-        "/panel/employers": <><TeamOutlined /> Сотрудники</>,
-        "/panel/reports": <><FileOutlined /> Отчеты</>
+        "/panel/orders": <div className='montserrat'><CarryOutOutlined /> Заявки</div>,
+        "/panel/employers": <div className='montserrat'><TeamOutlined /> Сотрудники</div>,
+        "/panel/reports": <div className='montserrat'><FileOutlined /> Отчеты</div>
     }
 
     const [collapsed, setCollapsed] = useState(false)
-    const [contentTitle, setContentTitle] = useState(titles[location.pathname])
+    const [contentTitle, setContentTitle] = useState(titles[loc.pathname])
 
     return (
         <Layout className="panel">
@@ -47,11 +48,11 @@ function Panel() {
                 />
                 <Menu
                     theme="dark" 
-                    defaultSelectedKeys={[location.pathname]} 
+                    defaultSelectedKeys={[loc.pathname]} 
                     mode="inline"
                     onClick={({key}) => setContentTitle(titles[key])}
                 >
-                    <Menu.Item key="/panal/orders" icon={<CarryOutOutlined />}>
+                    <Menu.Item key="/panel/orders" icon={<CarryOutOutlined />}>
                         <Link to="/panel/orders">Заявки</Link>
                     </Menu.Item>
                     <Menu.Item key="/panel/employers" icon={<TeamOutlined />}>

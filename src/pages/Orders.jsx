@@ -17,19 +17,19 @@ function Orders() {
         <Row className="orders">
             <Col xs={0} lg={24}>
                 <Table dataSource={orders} pagination={{ position: ['bottomCenter'] }}>
-                    <Table.Column title={<div className="table-header">Заголовок</div>} key='key' render={order => {
+                    <Table.Column title={<div className="table-header montserrat">Проблема</div>} key='key' render={order => {
                         return <Link to={`/panel/orders/${order.key}`}>{order.title}</Link>
                     }}/>
-                    <Table.Column title={<div className="table-header">Описание</div>} dataIndex='description' key='key' render={description => {
+                    <Table.Column title={<div className="table-header montserrat">Описание</div>} dataIndex='description' key='key' render={description => {
                         return <div className='truncate-text'>{description}</div>
                     }}/>
-                    <Table.Column title={<div className="table-header">Заявитель</div>} dataIndex='customer' key='key' render={customer => {
+                    <Table.Column title={<div className="table-header montserrat">Заявитель</div>} dataIndex='customer' key='key' render={customer => {
                         return <Link to={`/user/${customer.id}`}>{customer.first_name} {customer.last_name}</Link> 
                     }}/>
-                    <Table.Column title={<div className="table-header">Исполнитель</div>} dataIndex='performer' key='key' render={performer => {
+                    <Table.Column title={<div className="table-header montserrat">Исполнитель</div>} dataIndex='performer' key='key' render={performer => {
                         return performer ? <Link to={`/user/${performer.id}`}>{performer.first_name} {performer.last_name}</Link> : 'Не назначен'
                     }}/>
-                    <Table.Column title={<div className="table-header">Статус</div>} dataIndex='status' key='key' render={s => <StatusTag status={s}/>}/>
+                    <Table.Column title={<div className="table-header montserrat">Статус</div>} dataIndex='status' key='key' render={s => <StatusTag status={s}/>}/>
                 </Table>
             </Col>
             <Col xs={24} lg={0}>

@@ -2,7 +2,7 @@ import "./Order.sass"
 import { Row, Col, PageHeader, Form, Input, Select, Button } from "antd"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { LeftOutlined } from "@ant-design/icons"
+import { ArrowLeftOutlined } from "@ant-design/icons"
 import { fetchOrder } from "../requests"
 import StatusTag from "../components/StatusTag"
 
@@ -45,9 +45,8 @@ function Order() {
         <Row justify="center" className="order">
             <Col xs={24} md={18} xxl={12} >
                 <PageHeader className="order-page-header back-color"
-                    ghost={false}
-                    title={<div className="text-color">Заявка №{order.id}</div>}
-                    backIcon={<LeftOutlined className="text-color"/>}
+                    title={<div className="montserrat text-color">Заявка №{order.id}</div>}
+                    backIcon={<ArrowLeftOutlined className="text-color"/>}
                     onBack={() => window.history.back()}
                 />
                 <Form name="show-order" size="large" fields={fields} {...formItemLayout} onFinish={onFinish}>

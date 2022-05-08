@@ -24,7 +24,6 @@ const refreshToken = async () => {
             'refresh': token
         })
         localStorage.setItem('a', response.data.access)
-        console.log('refresh')
         return response
     } catch (err) {
         forgetToken()
