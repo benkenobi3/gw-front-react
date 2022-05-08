@@ -26,16 +26,17 @@ service.register({
   onResponseError(err) {
     if (err.response.status === 401 && err.config && 
       !err.config.hasRetriedRequest && err.response.config.url != AUTH_URL) {
-      refresh()
-      const token = localStorage.getItem('a')
-      return axios({
-          ...err.config,
-          hasRetriedRequest: true,
-          headers: {
-            ...err.config.headers,
-            Authorization: `Bearer ${token}`
-          }
-        })
+      refresh().then(() => {
+        const token = localStorage.getItem('a')
+        return axios({
+            ...err.config,
+            hasRetriedRequest: true,
+            headers: {
+              ...err.config.headers,
+              Authorization: `Bearer ${token}`
+            }
+          })
+      })
     }
     else {throw err}
   },

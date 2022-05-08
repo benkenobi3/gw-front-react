@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { PageHeader, Layout, Menu } from 'antd';
 import { useState } from 'react'
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 
 import DropdownUser from "../components/DropdownUser"
 import { getUser } from '../auth/user';
@@ -18,21 +18,23 @@ import  Order  from "../pages/Order"
 import  Orders  from "../pages/Orders"
 import  Employers  from "../pages/Employers"
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 
 function Panel() {
 
     const user = getUser()
 
+    const location = useLocation()
+
     const titles = {
-        "0": <><CarryOutOutlined /> Заявки</>,
-        "1": <><TeamOutlined /> Сотрудники</>,
-        "2": <><FileOutlined /> Отчеты</>
+        "/panal/orders": <><CarryOutOutlined /> Заявки</>,
+        "/panel/employers": <><TeamOutlined /> Сотрудники</>,
+        "/panel/reports": <><FileOutlined /> Отчеты</>
     }
 
     const [collapsed, setCollapsed] = useState(false)
-    const [contentTitle, setContentTitle] = useState(titles['0'])
+    const [contentTitle, setContentTitle] = useState(titles[location.pathname])
 
     return (
         <Layout className="panel">
@@ -45,17 +47,17 @@ function Panel() {
                 />
                 <Menu
                     theme="dark" 
-                    defaultSelectedKeys={['0']} 
+                    defaultSelectedKeys={[location.pathname]} 
                     mode="inline"
                     onClick={({key}) => setContentTitle(titles[key])}
                 >
-                    <Menu.Item key="0" icon={<CarryOutOutlined />}>
+                    <Menu.Item key="/panal/orders" icon={<CarryOutOutlined />}>
                         <Link to="/panel/orders">Заявки</Link>
                     </Menu.Item>
-                    <Menu.Item key="1" icon={<TeamOutlined />}>
+                    <Menu.Item key="/panel/employers" icon={<TeamOutlined />}>
                         <Link to="/panel/employers">Сотрудники</Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<FileOutlined />}>
+                    <Menu.Item key="/panel/reports" icon={<FileOutlined />}>
                         <Link to="/panel/reports">Отчеты</Link>
                     </Menu.Item>
                 </Menu>
@@ -75,7 +77,7 @@ function Panel() {
                     </div>
                     <div className='content-routes'>
                         <Routes>
-                            <Route path="" element={<Orders />}/>
+                            <Route path="" element={<Navigate to="/panel/orders" replace />}/>
                             <Route path="orders" index element={<Orders />}/>
                             <Route path="orders/:orderId" index element={<Order />}/>
                             <Route path="employers" element={<Employers />}/>

@@ -23,6 +23,7 @@ const refresh = () => {
         'refresh': token
     }).then((response) => {
         localStorage.setItem('a', response.data.access)
+        console.log('refresh')
     }).catch((err) => {
         logout()
     }) 
