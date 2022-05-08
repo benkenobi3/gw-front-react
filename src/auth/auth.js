@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {AUTH_URL, AUTH_REFRESH_URL} from '../settings'
 
-const login = async (username, password) => {
+const getToken = async (username, password) => {
     const response = await axios.post(AUTH_URL, {
         username,
         password
@@ -13,26 +13,28 @@ const login = async (username, password) => {
     return response
 }
 
-const refresh = () => {
+const refreshToken = async () => {
     const token = localStorage.getItem('r')
     if (!token) {
         throw Error('refresh token error')
     }
 
-    axios.post(AUTH_REFRESH_URL, {
-        'refresh': token
-    }).then((response) => {
+    try {
+        const response = await axios.post(AUTH_REFRESH_URL, {
+            'refresh': token
+        })
         localStorage.setItem('a', response.data.access)
         console.log('refresh')
-    }).catch((err) => {
-        logout()
-    }) 
+        return response
+    } catch (err) {
+        forgetToken()
+    } 
 }
 
-const logout = () => {
+const forgetToken = () => {
     localStorage.removeItem('a')
     localStorage.removeItem('r')
     window.location.reload()
 }
 
-export {login, refresh, logout}
+export {getToken, refreshToken, forgetToken}

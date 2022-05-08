@@ -1,18 +1,18 @@
 import { Menu, Dropdown } from "antd"
 import { Link } from "react-router-dom"
 import {DownOutlined, UserOutlined} from '@ant-design/icons'
-import { logout } from "../auth/auth"
+import { forgetToken } from "../auth/auth"
 
 const dropdownContent = (uid) => {
     return (
         <Menu>
-            <Menu.Item>
+            <Menu.Item key={"/user/" + uid}>
                 <Link to={"/user/" + uid} className="dropdown-item">Профиль</Link>
             </Menu.Item>
-            <Menu.Item danger>
+            <Menu.Item danger key="forgetToken">
                 <a onClick={e => {
                     e.preventDefault()
-                    logout()
+                    forgetToken()
                 }}>
                     Выйти
                 </a>

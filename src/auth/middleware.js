@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Service } from 'axios-middleware'
 import { AUTH_URL } from '../settings';
 
-import {refresh} from './auth'
+import { refreshToken } from './auth'
 
 const service = new Service(axios);
 
@@ -23,22 +23,26 @@ service.register({
     }
   },
 
-  onResponseError(err) {
+  async onResponseError(err) {
     if (err.response.status === 401 && err.config && 
       !err.config.hasRetriedRequest && err.response.config.url != AUTH_URL) {
-      refresh().then(() => {
-        const token = localStorage.getItem('a')
-        return axios({
-            ...err.config,
-            hasRetriedRequest: true,
-            headers: {
-              ...err.config.headers,
-              Authorization: `Bearer ${token}`
-            }
-          })
-      })
+
+        const refreshResponse = await refreshToken()
+        if (refreshResponse.status === 200) {
+
+          const token = localStorage.getItem('a')
+          return axios({
+              ...err.config,
+              hasRetriedRequest: true,
+              headers: {
+                ...err.config.headers,
+                Authorization: `Bearer ${token}`
+              }
+            })
+
+        }
     }
-    else {throw err}
+    throw err
   },
 
 })

@@ -2,7 +2,7 @@ import {useState} from "react"
 import {Row, Col, Button, Form, Input} from "antd"
 
 import "./Login.sass"
-import {login} from "../auth/auth"
+import {getToken} from "../auth/auth"
 import {getUser} from "../auth/user"
 import Header from "../components/Header"
 import {useNavigate, useSearchParams} from "react-router-dom"
@@ -31,7 +31,7 @@ function Login() {
 
         setAuthError('')
 
-        await login(values.username, values.password).then(_ => {
+        await getToken(values.username, values.password).then(_ => {
             console.log('auth success')
             params.get('next') ? navigate('../' + params.get('next'), {replace: true}) : navigate(-1)
         }).catch(_ => {
