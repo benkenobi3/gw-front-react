@@ -30,45 +30,53 @@ function OrderImages({images}) {
 
     const [visible, setVisible] = useState(false)
 
+    let result = <></>
+
     if (images) {
 
-        let preview = <></>
-        let button = <></>
-        if (images.length > 1) {
-            let group = []
-            for (let i =0; i < images.length; i++) {
-                group.push(<Image key={i} width={150} height={200} src={images[i].url} fallback={IMAGE_FALLBACK}/>)
-            }
-            preview = (
-                <div style={{ display: 'none' }}>
-                    <Image.PreviewGroup preview={{ visible, onVisibleChange: vis => setVisible(vis) }}>
-                        {group}
-                    </Image.PreviewGroup>
-                </div>
-            )
-
-            button = (
-                <Button type="link" onClick={() => setVisible(true)}>
-                    {"Еще\u00a0+" + (images.length-1)}
-                </Button>
-            )
-        }
-
-        return (
-            <>
+        result = (
+            <Image.PreviewGroup>
                 <Image 
                     width={150} height={200} 
                     src={images[0].url} 
-                    preview={{ visible: false }} 
-                    onClick={() => setVisible(true)} 
                     fallback={IMAGE_FALLBACK}
                 />
-                {button}
-                {preview}
-            </>
+            </Image.PreviewGroup>
         )
+
+        if (images.length > 1) {
+
+            let group = []
+            for (let i =0; i < images.length; i++) {
+                group.push(
+                    <Image key={i} width={150} height={200} src={images[i].url} fallback={IMAGE_FALLBACK}/>
+                )
+            }
+
+            result = (
+                <>
+                    <Image 
+                        width={150} height={200} 
+                        src={images[0].url} 
+                        preview={{ visible: false }} 
+                        onClick={() => setVisible(true)} 
+                        fallback={IMAGE_FALLBACK}
+                    />
+                    <Button type="link" onClick={() => setVisible(true)}>
+                        {"Еще\u00a0+" + (images.length-1)}
+                    </Button>
+                    <div style={{ display: 'none' }}>
+                        <Image.PreviewGroup preview={{ visible, onVisibleChange: vis => setVisible(vis) }}>
+                            {group}
+                        </Image.PreviewGroup>
+                    </div>
+                </>
+            )
+
+        }
+
     }
-    return <div></div>
+    return result
 }
 
 
