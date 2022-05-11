@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Service } from 'axios-middleware'
 import { AUTH_URL } from '../settings';
 
-import { refreshToken } from './auth'
+import { refreshToken, forgetToken } from './auth'
 
 const service = new Service(axios);
 
@@ -41,6 +41,9 @@ service.register({
             })
 
         }
+    } else if (err.response.status === 401 && err.config && 
+      err.config.hasRetriedRequest) {
+        forgetToken()
     }
     throw err
   },

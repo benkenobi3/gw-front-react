@@ -1,10 +1,75 @@
 import "./Order.sass"
-import { Row, Col, PageHeader, Form, Input, Select, Button } from "antd"
+import { fetchOrder } from "../requests"
+import { IMAGE_FALLBACK } from "../settings"
+import StatusTag from "../components/StatusTag"
+
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { ArrowLeftOutlined } from "@ant-design/icons"
-import { fetchOrder } from "../requests"
-import StatusTag from "../components/StatusTag"
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons"
+import { Row, Col, PageHeader, Form, Input, Select, Button, Image, Steps } from "antd"
+
+const { Step } = Steps;
+
+
+function OrderTimeline({creation_dt}) {
+    if (creation_dt) {
+        const date = new Date(creation_dt)
+        return (
+            <Steps direction="vertical" size="small" current={1}>
+                <Step title="Заявка создана" description={date.toLocaleString()} />
+                <Step title="Заявка назначена на исполнителя" description={(new Date()).toLocaleString()} />
+                <Step title="Ожидание" description="" />
+            </Steps>
+        )
+    }
+    return <Steps direction="vertical" size="small" current={0}><Step title="Заявка создана" description={""} /></Steps>
+}
+
+
+function OrderImages({images}) {
+
+    const [visible, setVisible] = useState(false)
+
+    if (images) {
+
+        let preview = <></>
+        let button = <></>
+        if (images.length > 1) {
+            let group = []
+            for (let i =0; i < images.length; i++) {
+                group.push(<Image key={i} width={150} height={200} src={images[i].url} fallback={IMAGE_FALLBACK}/>)
+            }
+            preview = (
+                <div style={{ display: 'none' }}>
+                    <Image.PreviewGroup preview={{ visible, onVisibleChange: vis => setVisible(vis) }}>
+                        {group}
+                    </Image.PreviewGroup>
+                </div>
+            )
+
+            button = (
+                <a onClick={() => setVisible(true)} style={{marginLeft: '10px'}}>
+                    {"Еще\u00a0+" + (images.length-1)}
+                </a>
+            )
+        }
+
+        return (
+            <>
+                <Image 
+                    width={150} height={200} 
+                    src={images[0].url} 
+                    preview={{ visible: false }} 
+                    onClick={() => setVisible(true)} 
+                    fallback={IMAGE_FALLBACK}
+                />
+                {button}
+                {preview}
+            </>
+        )
+    }
+    return <div></div>
+}
 
 
 function Order() {
@@ -12,6 +77,7 @@ function Order() {
 
     const [order, setOrder] = useState({})
     const [edit, setEdit] = useState(false)
+    
 
     useEffect(async () => {
         const data = await fetchOrder(orderId)
@@ -20,8 +86,8 @@ function Order() {
 
     const fields = [
         {name: 'title', value: order.title},
+        {name: 'status', value: order.status},
         {name: 'description', value: order.description},
-        {name: 'status', value: order.status}
     ]
 
     const formItemLayout = {
@@ -42,8 +108,8 @@ function Order() {
     }
 
     return (
-        <Row justify="center" className="order">
-            <Col xs={24} md={18} xxl={12} >
+        <Row className="order">
+            <Col xs={24} md={18} xxl={{span: 12, offset: 5}}>
                 <PageHeader className="order-page-header back-color"
                     title={<div className="montserrat text-color">Заявка №{order.id}</div>}
                     backIcon={<ArrowLeftOutlined className="text-color"/>}
@@ -66,26 +132,38 @@ function Order() {
                             <Select.Option value="rejected"><StatusTag status="rejected"/></Select.Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item wrapperCol={{span: 24, style: {textAlign: 'right'}}}>
-                        <Button 
-                            size="default" 
-                            type="primary" 
-                            htmlType="submit"
-                            className="button-margin"
-                            hidden={!edit}
-                        >
-                            Сохранить  
-                        </Button>
-                        <Button 
-                            size="default" 
-                            type="dashed" 
-                            className="button-back-color"
-                            onClick={onEditOrCancel}
-                        >
-                            {edit ? 'Отмена' : 'Редактировать'}    
-                        </Button>
+
+                    <Form.Item label="Фото" name="images">
+                        <OrderImages images={order.images}/>
                     </Form.Item>
+                    
+                    <Row justify="center">
+                        <Col md={24} style={{textAlign: "end"}}>
+                            <Button
+                                size="default" 
+                                type="primary" 
+                                htmlType="submit"
+                                className="button-margin"
+                                hidden={!edit}
+                            >
+                                Сохранить  
+                            </Button>
+                            <Button 
+                                size="default" 
+                                type="dashed" 
+                                className="button-back-color"
+                                onClick={onEditOrCancel}
+                            >
+                                {edit ? 'Отмена' : 'Редактировать'}    
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form>
+            </Col>
+            <Col xs={24} md={{span: 5, offset: 1}} xxl={5}>
+                <Row justify="center" style={{marginTop: '95px'}}>
+                    <Col><OrderTimeline creation_dt={order.creation_datetime}/></Col>
+                </Row>
             </Col>
         </Row>
     )

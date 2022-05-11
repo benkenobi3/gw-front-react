@@ -5,10 +5,11 @@ import {
   FileOutlined,
   TeamOutlined,
   DoubleLeftOutlined,
+  AreaChartOutlined
 } from '@ant-design/icons';
 import { PageHeader, Layout, Menu } from 'antd';
 import { useState } from 'react'
-import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 
 import DropdownUser from "../components/DropdownUser"
 import { getUser } from '../auth/user';
@@ -29,6 +30,7 @@ function Panel() {
     console.log(loc)
 
     const titles = {
+        "/panel": <div className='montserrat'><AreaChartOutlined /> Обзор</div>,
         "/panel/orders": <div className='montserrat'><CarryOutOutlined /> Заявки</div>,
         "/panel/employers": <div className='montserrat'><TeamOutlined /> Сотрудники</div>,
         "/panel/reports": <div className='montserrat'><FileOutlined /> Отчеты</div>
@@ -78,7 +80,7 @@ function Panel() {
                     </div>
                     <div className='content-routes'>
                         <Routes>
-                            <Route path="" element={<Navigate to="/panel/orders" replace />}/>
+                            <Route path="" element={<></>}/>
                             <Route path="orders" index element={<Orders />}/>
                             <Route path="orders/:orderId" index element={<Order />}/>
                             <Route path="employers" element={<Employers />}/>

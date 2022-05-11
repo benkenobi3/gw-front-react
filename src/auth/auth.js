@@ -27,7 +27,7 @@ const refreshToken = async () => {
         return response
     } catch (err) {
         forgetToken()
-    } 
+    }
 }
 
 const forgetToken = () => {

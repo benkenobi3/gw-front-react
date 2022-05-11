@@ -34,7 +34,7 @@ function Orders() {
             </Col>
             <Col xs={24} lg={0}>
                 <List dataSource={orders} renderItem={item => (
-                    <List.Item actions={[<StatusTag status={item.status}/>]}>
+                    <List.Item key={item.id} actions={[<StatusTag status={item.status}/>]}>
                         <List.Item.Meta
                             title={item.title}
                             description={
