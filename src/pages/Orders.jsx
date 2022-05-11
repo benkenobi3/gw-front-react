@@ -8,9 +8,12 @@ import { fetchOrders } from "../requests"
 function Orders() {
     const [orders, setOrders] = useState([])
 
-    useEffect(async () => {
-        const data = await fetchOrders();
-        setOrders(data)
+    useEffect(() => {
+        async function F() {
+            const data = await fetchOrders()
+            setOrders(data)
+        }
+        F()
     }, [])
 
     return (

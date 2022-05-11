@@ -27,7 +27,6 @@ function Panel() {
     const user = getUser()
 
     const loc = window.location
-    console.log(loc)
 
     const titles = {
         "/panel": <div className='montserrat'><AreaChartOutlined /> Обзор</div>,

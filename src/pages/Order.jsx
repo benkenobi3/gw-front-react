@@ -5,7 +5,7 @@ import StatusTag from "../components/StatusTag"
 
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons"
+import { ArrowLeftOutlined } from "@ant-design/icons"
 import { Row, Col, PageHeader, Form, Input, Select, Button, Image, Steps } from "antd"
 
 const { Step } = Steps;
@@ -48,9 +48,9 @@ function OrderImages({images}) {
             )
 
             button = (
-                <a onClick={() => setVisible(true)} style={{marginLeft: '10px'}}>
+                <Button type="link" onClick={() => setVisible(true)}>
                     {"Еще\u00a0+" + (images.length-1)}
-                </a>
+                </Button>
             )
         }
 
@@ -79,10 +79,13 @@ function Order() {
     const [edit, setEdit] = useState(false)
     
 
-    useEffect(async () => {
-        const data = await fetchOrder(orderId)
-        setOrder(data)
-    }, [])
+    useEffect(() => {
+        async function F() {
+            const data = await fetchOrder(orderId)
+            setOrder(data)
+        }
+        F()
+    }, [orderId])
 
     const fields = [
         {name: 'title', value: order.title},
