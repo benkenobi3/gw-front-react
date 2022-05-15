@@ -1,83 +1,14 @@
 import "./Order.sass"
 import { fetchOrder } from "../requests"
-import { IMAGE_FALLBACK } from "../settings"
 import StatusTag from "../components/StatusTag"
+import OrderImages from "../components/OrderImages"
+import OrderTimeline from "../components/OrderTimeline"
+import OrderPerformer from "../components/OrderPerformer"
 
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { ArrowLeftOutlined } from "@ant-design/icons"
-import { Row, Col, PageHeader, Form, Input, Select, Button, Image, Steps } from "antd"
-
-const { Step } = Steps;
-
-
-function OrderTimeline({creation_dt}) {
-    if (creation_dt) {
-        const date = new Date(creation_dt)
-        return (
-            <Steps direction="vertical" size="small" current={1}>
-                <Step title="Заявка создана" description={date.toLocaleString()} />
-                <Step title="Заявка назначена на исполнителя" description={(new Date()).toLocaleString()} />
-                <Step title="Ожидание" description="" />
-            </Steps>
-        )
-    }
-    return <Steps direction="vertical" size="small" current={0}><Step title="Заявка создана" description={""} /></Steps>
-}
-
-
-function OrderImages({images}) {
-
-    const [visible, setVisible] = useState(false)
-
-    let result = <></>
-
-    if (images) {
-
-        result = (
-            <Image.PreviewGroup>
-                <Image 
-                    width={150} height={200} 
-                    src={images[0].url} 
-                    fallback={IMAGE_FALLBACK}
-                />
-            </Image.PreviewGroup>
-        )
-
-        if (images.length > 1) {
-
-            let group = []
-            for (let i =0; i < images.length; i++) {
-                group.push(
-                    <Image key={i} width={150} height={200} src={images[i].url} fallback={IMAGE_FALLBACK}/>
-                )
-            }
-
-            result = (
-                <>
-                    <Image 
-                        width={150} height={200} 
-                        src={images[0].url} 
-                        preview={{ visible: false }} 
-                        onClick={() => setVisible(true)} 
-                        fallback={IMAGE_FALLBACK}
-                    />
-                    <Button type="link" onClick={() => setVisible(true)}>
-                        {"Еще\u00a0+" + (images.length-1)}
-                    </Button>
-                    <div style={{ display: 'none' }}>
-                        <Image.PreviewGroup preview={{ visible, onVisibleChange: vis => setVisible(vis) }}>
-                            {group}
-                        </Image.PreviewGroup>
-                    </div>
-                </>
-            )
-
-        }
-
-    }
-    return result
-}
+import { Row, Col, PageHeader, Form, Input, Select, Button } from "antd"
 
 
 function Order() {
@@ -85,8 +16,14 @@ function Order() {
 
     const [order, setOrder] = useState({})
     const [edit, setEdit] = useState(false)
-    
 
+    const fields = [
+        {name: 'title', value: order.title},
+        {name: 'status', value: order.status},
+        {name: 'description', value: order.description},
+        {name: 'performer', value: order.performer ? order.performer.id.toString() : 0},
+    ]
+    
     useEffect(() => {
         async function F() {
             const data = await fetchOrder(orderId)
@@ -95,20 +32,10 @@ function Order() {
         F()
     }, [orderId])
 
-    const fields = [
-        {name: 'title', value: order.title},
-        {name: 'status', value: order.status},
-        {name: 'description', value: order.description},
-    ]
-
     const formItemLayout = {
         labelAlign: 'left',
         labelCol: {xs: {span: 24}, sm: {span: 4}, xxl: {span: 3}},
         wrapperCol: {xs: {span: 24}, sm: {span: 20}, xxl: {span: 23}},
-    }
-
-    const onEditOrCancel = () => {
-        setEdit(edit => !edit)
     }
 
     const onFinish = values => {
@@ -116,6 +43,10 @@ function Order() {
             order.status = values.status 
         }
         setEdit(false)
+    }
+
+    const onEditOrCancel = () => {
+        setEdit(edit => !edit)
     }
 
     return (
@@ -128,11 +59,13 @@ function Order() {
                 />
                 <Form name="show-order" size="large" fields={fields} {...formItemLayout} onFinish={onFinish}>
                     <Form.Item label="Проблема" name="title">
-                        <Input disabled className="disabled-black"/>
+                        <Input disabled className="input-disabled"/>
                     </Form.Item>
+
                     <Form.Item label="Описание" name="description">
-                        <Input.TextArea disabled className="disabled-black" rows={3}/>
+                        <Input.TextArea disabled className="input-disabled" rows={3}/>
                     </Form.Item>
+
                     <Form.Item label="Статус" name="status">
                         <Select disabled={!edit}>
                             <Select.Option value="created"><StatusTag status="created"/></Select.Option>
@@ -142,6 +75,10 @@ function Order() {
                             <Select.Option value="done"><StatusTag status="done"/></Select.Option>
                             <Select.Option value="rejected"><StatusTag status="rejected"/></Select.Option>
                         </Select>
+                    </Form.Item>
+
+                    <Form.Item label="Исполнитель" name="performer">
+                        <OrderPerformer performer={order.performer} availablePerformers={[]} edit={edit}/>
                     </Form.Item>
 
                     <Form.Item label="Фото" name="images">
