@@ -19,15 +19,11 @@ const refreshToken = async () => {
         throw Error('refresh token error')
     }
 
-    try {
-        const response = await axios.post(AUTH_REFRESH_URL, {
-            'refresh': token
-        })
-        localStorage.setItem('a', response.data.access)
-        return response
-    } catch (err) {
-        forgetToken()
-    }
+    const response = await axios.post(AUTH_REFRESH_URL, {
+        'refresh': token
+    })
+    localStorage.setItem('a', response.data.access)
+    return response
 }
 
 const forgetToken = () => {
