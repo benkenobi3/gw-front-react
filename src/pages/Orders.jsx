@@ -10,7 +10,7 @@ function Orders() {
 
     useEffect(() => {
         async function F() {
-            const data = await fetchOrders()
+            const {data} = await fetchOrders()
             setOrders(data)
         }
         F()

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {AUTH_URL, AUTH_REFRESH_URL} from '../settings'
+import {AUTH_URL, AUTH_REFRESH_URL} from '../api'
 
 const getToken = async (username, password) => {
     const response = await axios.post(AUTH_URL, {

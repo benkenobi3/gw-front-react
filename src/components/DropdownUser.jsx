@@ -23,7 +23,7 @@ const dropdownContent = (uid) => {
 
 function DropdownUser(props) {
     return (
-        <Dropdown overlay={dropdownContent(props.user.uid)} placement="bottomLeft" arrow={{ pointAtCenter: true }} className={props.className}>
+        <Dropdown overlay={dropdownContent(props.user.id)} placement="bottomLeft" arrow={{ pointAtCenter: true }} className={props.className}>
             <div className="username">
                 <UserOutlined/> {props.user.username} <DownOutlined />
             </div>

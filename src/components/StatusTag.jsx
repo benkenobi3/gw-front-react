@@ -1,5 +1,5 @@
 import { Tag } from "antd"
-import { STATUS_MAPPING } from "../settings"
+import { STATUS_MAPPING } from "../utils"
 
 
 function StatusTag({status}) {

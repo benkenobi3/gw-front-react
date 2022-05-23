@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Image, Button } from "antd"
-import { IMAGE_FALLBACK } from "../settings"
+import { IMAGE_FALLBACK } from "../utils"
 
 
 function OrderImages({images}) {

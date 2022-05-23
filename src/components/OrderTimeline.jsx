@@ -2,9 +2,9 @@ import { Steps } from "antd"
 
 const { Step } = Steps;
 
-function OrderTimeline({creation_dt}) {
-    if (creation_dt) {
-        const date = new Date(creation_dt)
+function OrderTimeline({creationDatetime}) {
+    if (creationDatetime) {
+        const date = new Date(creationDatetime)
         return (
             <Steps direction="vertical" size="small" current={1}>
                 <Step title="Заявка создана" description={date.toLocaleString()} />
@@ -13,7 +13,7 @@ function OrderTimeline({creation_dt}) {
             </Steps>
         )
     }
-    return <Steps direction="vertical" size="small" current={0}><Step title="Заявка создана" description={""} /></Steps>
+    return <></>
 }
 
 export default OrderTimeline

@@ -9,7 +9,7 @@ function Employers() {
     const [employers, setEmployers] = useState([])
 
     useEffect(async () => {
-        const data = await fetchEmployers();
+        const {data} = await fetchEmployers();
         setEmployers(data)
     }, [])
 

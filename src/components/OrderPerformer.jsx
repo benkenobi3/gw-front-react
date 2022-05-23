@@ -1,37 +1,24 @@
 import { Select } from "antd"
 import { Link } from "react-router-dom"
+import { LinkOutlined } from "@ant-design/icons"
 
-function OrderPerformer({performer, availablePerformers, edit}) {
+function OrderPerformer({availablePerformers, disabled, value, onSelect, onChange}) {
  
-    if (!performer)
-        return <></>
-
-    const options=[(
-        <Select.Option value={performer.id} key={performer.id.toString()}>
-            <Link to={"/user/" + performer.id}>
-                {`${performer.first_name} ${performer.last_name}`}
-            </Link>
+    const options = [(
+        <Select.Option value={-1} key={-1}>
+            Не назначен
         </Select.Option>
     )]
-
-    if (!availablePerformers)
-        return (
-            <Select disabled={!edit}>
-                {options}
-            </Select>
-        )
 
     for (let p of availablePerformers)
         options.push(
             <Select.Option value={p.id} key={p.id}>
-                <Link to={"/user/" + p.id}>
-                    {`${p.first_name} ${p.last_name}`}
-                </Link>
+                {`${p.first_name} ${p.last_name}`} <Link to={"/user/" + p.id}><LinkOutlined /></Link>
             </Select.Option>
         )
 
     return (
-        <Select disabled={!edit}>
+        <Select disabled={disabled} value={value} onSelect={onSelect} onChange={onChange}>
             {options}
         </Select>
     )

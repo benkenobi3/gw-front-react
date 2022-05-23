@@ -1,29 +1,31 @@
-export const HOST_URL = 'http://localhost:8000/'
+const getNoun = (number, one, two, five) => {
+    let n = Math.abs(number);
+    n %= 100;
+    if (n >= 5 && n <= 20) {
+      return five;
+    }
+    n %= 10;
+    if (n === 1) {
+      return one;
+    }
+    if (n >= 2 && n <= 4) {
+      return two;
+    }
+    return five;
+}
 
-export const AUTH_URL = HOST_URL + 'auth/token/'
-export const AUTH_REFRESH_URL = AUTH_URL + 'refresh/'
+export const datetimeFormat = datetimeString => {
+    const now = new Date()
+    const datetime = new Date(datetimeString)
+    
+    const days = (now.getTime() - datetime.getTime()) / (60 * 60 * 24 * 1000)
 
-export const API_URL = HOST_URL + 'api/'
-
-export const USERS_URL = API_URL + 'users/'
-export const USERS_USER_URL = user_id => `${USERS_URL}${user_id}`
-
-export const EMPLOYERS_URL = API_URL + 'employers/'
-export const EMPLOYERS_ALL_URL = EMPLOYERS_URL + 'all'
-
-export const ORDERS_URL = API_URL + 'orders/'
-export const ORDERS_ALL_URL = ORDERS_URL + 'all'
-export const ORDERS_LIST_URL = ORDERS_URL + 'list'
-export const ORDERS_CREATE_URL = ORDERS_URL + 'create'
-export const ORDERS_ORDER_URL = order_id => `${ORDERS_URL}${order_id}`
-export const ORDERS_STATUS_URL = order_id => `${ORDERS_URL}${order_id}/status`
-export const ORDERS_PERFORMER_URL = order_id => `${ORDERS_URL}${order_id}/performer`
-
-export const COMMENTS_URL = API_URL + 'comments/'
-export const COMMENTS_LIST_URL = COMMENTS_URL + 'list'
-export const COMMENTS_CREATE_URL = COMMENTS_URL + 'create'
-export const COMMENTS_UPDATE_URL = comment_id => `${COMMENTS_URL}${comment_id}/update`
-export const COMMENTS_DELETE_URL = comment_id => `${COMMENTS_URL}${comment_id}/delete`
+    if (days < 1)
+        return datetime.toLocaleTimeString()
+    if (days === 1)
+        return 'yesterday'
+    return `${days} ${getNoun(days, 'день', 'дня', 'дней')} назад`
+}
 
 export const STATUS_MAPPING = {
     'created': 'СОЗДАНА',

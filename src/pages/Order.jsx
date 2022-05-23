@@ -1,63 +1,125 @@
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { ArrowLeftOutlined, UserOutlined } from "@ant-design/icons"
+import { Row, Col, PageHeader, Form, Input, Select, Button, Skeleton, Avatar } from "antd"
+
 import "./Order.sass"
-import { fetchOrder } from "../requests"
+import { getUser } from "../auth/user"
+import { fetchOrder, fetchComments, saveComment } from "../requests"
 import StatusTag from "../components/StatusTag"
 import OrderImages from "../components/OrderImages"
 import OrderTimeline from "../components/OrderTimeline"
 import OrderPerformer from "../components/OrderPerformer"
-
-import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
-import { ArrowLeftOutlined } from "@ant-design/icons"
-import { Row, Col, PageHeader, Form, Input, Select, Button } from "antd"
+import OrderCustomer from "../components/OrderCustomer"
+import OrderComments from "../components/OrderComments"
 
 
 function Order() {
+    const user = getUser()
     const { orderId } = useParams()
 
     const [order, setOrder] = useState({})
+
+    const [comments, setComments] = useState([])
+    const [commentsCreationError, setCommentsCreationError] = useState("")
+
     const [edit, setEdit] = useState(false)
 
-    const fields = [
+    
+    const availablePerformers = []
+    if (order.performer)
+        availablePerformers.push(order.performer)
+    
+    const orderFields = [
         {name: 'title', value: order.title},
         {name: 'status', value: order.status},
         {name: 'description', value: order.description},
-        {name: 'performer', value: order.performer ? order.performer.id.toString() : 0},
+        {name: 'performer', value: order.performer ? order.performer.id : -1},
+        {name: 'customer', value: order.customer}
     ]
-    
-    useEffect(() => {
-        async function F() {
-            const data = await fetchOrder(orderId)
-            setOrder(data)
-        }
-        F()
-    }, [orderId])
 
-    const formItemLayout = {
-        labelAlign: 'left',
-        labelCol: {xs: {span: 24}, sm: {span: 4}, xxl: {span: 3}},
-        wrapperCol: {xs: {span: 24}, sm: {span: 20}, xxl: {span: 23}},
+    const commentsFields = [
+        {name: 'order', value: orderId},
+        {name: 'text', value: ''},
+    ]
+
+    async function fetchAndSetOrder() {
+        const { data } = await fetchOrder(orderId)
+        setOrder(data)
     }
 
-    const onFinish = values => {
-        if (values.status !== order.status) {
-            order.status = values.status 
-        }
+    async function fetchAndSetComments() {
+        const { data } = await fetchComments(orderId)
+        setComments(data)
+    }
+
+    useEffect(() => {
+        fetchAndSetOrder()
+        fetchAndSetComments()
+    }, [orderId])
+
+    
+    const updateOrder = values => {
+        const diff = {}
+
+        if (values.status !== order.status)
+            diff.status = values.status 
+        
+        if (values.performer > 0)
+            diff.performer = availablePerformers.find(perf => perf.id === values.performer)
+        else
+            diff.performer = undefined
+
+        setOrder({...order, ...diff})
         setEdit(false)
+    }
+
+
+    const createComment = async (values) => {
+        setCommentsCreationError('')
+
+        const { data, err } = await saveComment(values)
+        data.user = user
+        data.creation_datetime = new Date()
+
+        if (err) {
+            setCommentsCreationError('Ошибка при создании комментария')
+            console.log(err)
+
+            if (err.text)
+                setCommentsCreationError('Текст комментария не может быть пустым')
+            return
+        }
+        
+        setComments(c => [...c, data])
     }
 
     const onEditOrCancel = () => {
         setEdit(edit => !edit)
     }
 
+    const formItemLayout = {
+        labelAlign: 'left',
+        labelCol: {xs: {span: 24}, sm: {span: 4}, xxl: {span: 3}},
+        wrapperCol: {xs: {span: 24}, sm: {span: 20}, xxl: {span: 21}},
+    }
+
+    const formCommentLayout = {
+        labelAlign: 'left',
+        wrapperCol: {xs: {span: 24}},
+    }
+
     return (
-        <Row className="order">
+        <div className="order">
+        <Row>
+            <Skeleton loading={!order.id} active>
             <Col xs={24} md={18} xxl={{span: 12, offset: 5}}>
                 <PageHeader className="order-page-header back-color"
                     title={<div className="montserrat text-color">Заявка №{order.id}</div>}
                     backIcon={<ArrowLeftOutlined className="text-color"/>}
                     onBack={() => window.history.back()}
                 />
-                <Form name="show-order" size="large" fields={fields} {...formItemLayout} onFinish={onFinish}>
+                <Form name="show-order" size="large" fields={orderFields} {...formItemLayout} onFinish={updateOrder}>
                     <Form.Item label="Проблема" name="title">
                         <Input disabled className="input-disabled"/>
                     </Form.Item>
@@ -77,8 +139,12 @@ function Order() {
                         </Select>
                     </Form.Item>
 
+                    <Form.Item label="Заявитель" name="customer">
+                        <OrderCustomer/>
+                    </Form.Item>
+
                     <Form.Item label="Исполнитель" name="performer">
-                        <OrderPerformer performer={order.performer} availablePerformers={[]} edit={edit}/>
+                        <OrderPerformer availablePerformers={availablePerformers} disabled={!edit}/>
                     </Form.Item>
 
                     <Form.Item label="Фото" name="images">
@@ -87,33 +153,58 @@ function Order() {
                     
                     <Row justify="center">
                         <Col md={24} style={{textAlign: "end"}}>
-                            <Button
-                                size="default" 
-                                type="primary" 
-                                htmlType="submit"
-                                className="button-margin"
-                                hidden={!edit}
-                            >
+                            <Button size="default" type="primary" htmlType="submit" className="button-margin" hidden={!edit}>
                                 Сохранить  
                             </Button>
-                            <Button 
-                                size="default" 
-                                type="dashed" 
-                                className="button-back-color"
-                                onClick={onEditOrCancel}
-                            >
+                            <Button size="default" type="dashed" className="button-back-color" onClick={onEditOrCancel}>
                                 {edit ? 'Отмена' : 'Редактировать'}    
                             </Button>
                         </Col>
                     </Row>
                 </Form>
             </Col>
+            </Skeleton>
             <Col xs={24} md={{span: 5, offset: 1}} xxl={5}>
                 <Row justify="center" style={{marginTop: '95px'}}>
-                    <Col><OrderTimeline creation_dt={order.creation_datetime}/></Col>
+                    <Col><OrderTimeline creationDatetime={order.creation_datetime}/></Col>
                 </Row>
             </Col>
         </Row>
+        <Row className="comments-block">
+            <Col xs={24} md={18} xxl={{span: 12, offset: 5}}>
+                <Row justify="center" className="comments-list-block">
+                    <Col xs={24}><OrderComments comments={comments}/></Col>
+                </Row>
+                <Row className="comments-new">
+                    <Col xs={24}>
+                        <Form name="comment" size="large" fields={commentsFields} {...formCommentLayout} onFinish={createComment}>
+
+                            <Form.Item label="" name="text" rules={[{ required: true, message: 'Поле не может быть пустым'}]}>
+                                <Input.TextArea className="input-disabled comments-input" rows={3} placeholder="Оставьте комменатарий"/>
+                            </Form.Item>
+
+                            <Form.Item label="" name="order" style={{display: 'none'}}>
+                                <Input hidden={true}></Input>
+                            </Form.Item>
+
+                            <Row align="middle">
+                                <Col xs={24} md={3}>
+                                    <Button size="default" htmlType="submit" className="comments-button">
+                                        Опубликовать
+                                    </Button>
+                                </Col>
+                                <Col style={{display: 'flex'}}>
+                                    <Avatar size={30} icon={<UserOutlined />} className="comments-avatar"/>
+                                    <h1 style={{lineHeight: '30px', fontSize: '14px'}} className="montserrat">{`${user.first_name} ${user.last_name}`}</h1>
+                                </Col>
+                            </Row>
+
+                        </Form>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
+        </div>
     )
 }
 
