@@ -18,7 +18,7 @@ export const datetimeFormat = datetimeString => {
     const now = new Date()
     const datetime = new Date(datetimeString)
     
-    const days = (now.getTime() - datetime.getTime()) / (60 * 60 * 24 * 1000)
+    const days = Math.round((now.getTime() - datetime.getTime()) / (60 * 60 * 24 * 1000))
 
     if (days < 1)
         return datetime.toLocaleTimeString()

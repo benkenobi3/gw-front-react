@@ -1,22 +1,20 @@
 import { Comment, List, Avatar} from "antd"
 import { Link } from "react-router-dom"
-import { FormOutlined, UserOutlined } from "@ant-design/icons"
+import { ConsoleSqlOutlined, FormOutlined, UserOutlined } from "@ant-design/icons"
 
 import { datetimeFormat } from "../utils"
 
-function OrderComments({comments}) {
+function OrderComments({comments, onDelete}) {
  
     if (comments.length < 1)
         return (
-            <div style={{textAlign: "center"}}>Нет комментариев <FormOutlined /></div>
+            <div style={{textAlign: "center", marginBottom: '50px'}}>Нет комментариев <FormOutlined /></div>
         )
-
-    
 
     const res = []
     for (let c of comments) {
         const actions = [
-            <span key={0}>delete</span>,
+            <span key={0} onClick={()=>onDelete(c.id)}>delete</span>,
         ]
 
         const author = (

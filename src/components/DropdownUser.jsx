@@ -25,7 +25,7 @@ function DropdownUser(props) {
     return (
         <Dropdown overlay={dropdownContent(props.user.id)} placement="bottomLeft" arrow={{ pointAtCenter: true }} className={props.className}>
             <div className="username">
-                <UserOutlined/> {props.user.username} <DownOutlined />
+                <UserOutlined/> {`${props.user.first_name} ${props.user.last_name}`} <DownOutlined />
             </div>
         </Dropdown>
     )

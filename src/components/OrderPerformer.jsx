@@ -18,7 +18,7 @@ function OrderPerformer({availablePerformers, disabled, value, onSelect, onChang
         )
 
     return (
-        <Select disabled={disabled} value={value} onSelect={onSelect} onChange={onChange}>
+        <Select disabled={disabled} value={value} defaultValue={-1} onSelect={onSelect} onChange={onChange}>
             {options}
         </Select>
     )

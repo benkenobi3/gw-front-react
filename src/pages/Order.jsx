@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { ArrowLeftOutlined, UserOutlined } from "@ant-design/icons"
-import { Row, Col, PageHeader, Form, Input, Select, Button, Skeleton, Avatar } from "antd"
+import { ArrowLeftOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons"
+import { Row, Col, PageHeader, Form, Input, Select, Button, Skeleton, Avatar, Tooltip } from "antd"
 
 import "./Order.sass"
 import { getUser } from "../auth/user"
-import { fetchOrder, fetchComments, saveComment } from "../requests"
+import { fetchOrder, fetchComments, fetchAvailableEmployers, 
+    saveComment, saveOrderStatus, saveOrderPerformer, deleteComment } from "../requests"
 import StatusTag from "../components/StatusTag"
 import OrderImages from "../components/OrderImages"
 import OrderTimeline from "../components/OrderTimeline"
@@ -19,23 +20,21 @@ function Order() {
     const { orderId } = useParams()
 
     const [order, setOrder] = useState({})
+    const [availableEmployers, setAvailableEmployers] = useState([])
 
     const [comments, setComments] = useState([])
     const [commentsCreationError, setCommentsCreationError] = useState("")
 
     const [edit, setEdit] = useState(false)
-
-    
-    const availablePerformers = []
-    if (order.performer)
-        availablePerformers.push(order.performer)
-    
+    const [warning, setWarning] = useState(false)
+   
     const orderFields = [
         {name: 'title', value: order.title},
         {name: 'status', value: order.status},
         {name: 'description', value: order.description},
         {name: 'performer', value: order.performer ? order.performer.id : -1},
-        {name: 'customer', value: order.customer}
+        {name: 'customer', value: order.customer},
+        {name: 'spec', value: order.perf_spec ? order.perf_spec.title : ''}
     ]
 
     const commentsFields = [
@@ -53,29 +52,56 @@ function Order() {
         setComments(data)
     }
 
+    async function fetchAndSetAvailableEmployers() {
+        const { data } = await fetchAvailableEmployers(orderId)
+        setAvailableEmployers(data)
+    }
+
     useEffect(() => {
         fetchAndSetOrder()
         fetchAndSetComments()
+        fetchAndSetAvailableEmployers()
     }, [orderId])
 
-    
-    const updateOrder = values => {
+    const updateOrder = async values => {
         const diff = {}
 
-        if (values.status !== order.status)
-            diff.status = values.status 
-        
-        if (values.performer > 0)
-            diff.performer = availablePerformers.find(perf => perf.id === values.performer)
-        else
-            diff.performer = undefined
+        if (values.performer > 0) {
+
+            const currentPerformer = order.performer ? order.performer.id : -1
+            if ( currentPerformer !== values.performer) {
+                const {data, err} = await saveOrderPerformer(order.id, values.performer)
+                if (!err) {
+                    diff.performer = availableEmployers.find(perf => perf.id === values.performer)
+                    diff.status = 'appointed'
+                }
+                else
+                    console.log(data)   
+            }
+            else if (values.status !== order.status) {
+                const {data, err} = await saveOrderStatus(order.id, values.status)
+                if (!err)
+                    diff.status = data.status
+                else
+                    console.log(data)
+            }
+        }
+        else {
+            const {data, err} = await saveOrderPerformer(order.id, null)
+            if (!err) {
+                diff.performer = undefined
+                diff.status = 'created'
+            }
+            else
+                console.log(data)   
+        }
 
         setOrder({...order, ...diff})
         setEdit(false)
     }
 
 
-    const createComment = async (values) => {
+    const createComment = async values => {
         setCommentsCreationError('')
 
         const { data, err } = await saveComment(values)
@@ -94,9 +120,28 @@ function Order() {
         setComments(c => [...c, data])
     }
 
+    const onCommentDelete = async commentId => {
+        const { data, err } = await deleteComment(commentId)
+
+        if (!err) {                              
+            setComments(comments => {
+                const result = []
+                for (let c of comments) {
+                    if (c.id !== commentId)
+                        result.push(c)
+                }    
+                return result
+            })
+        }
+        else
+            console.log(data)
+    }
+
     const onEditOrCancel = () => {
+        setWarning(warning => !warning)
         setEdit(edit => !edit)
     }
+
 
     const formItemLayout = {
         labelAlign: 'left',
@@ -107,6 +152,25 @@ function Order() {
     const formCommentLayout = {
         labelAlign: 'left',
         wrapperCol: {xs: {span: 24}},
+    }
+
+    const PerformerLabel = ({warning}) => {
+        const hiddenStyle = warning ? {} : {display: 'none'}
+        const title = 'При изменении исполнителя заявка' +
+            ' автоматически перейдет в статус "Назначена"' +
+            ' При удалении исполнителя заявка перейдет в статус "Создана"'
+        
+        return (
+        <div style={{display: 'flex'}}>
+            Исполнитель
+            <div style={hiddenStyle} className="warning">
+                <Tooltip
+                    title={title}>
+                    <WarningOutlined />
+                </Tooltip>
+            </div>
+        </div>
+        )
     }
 
     return (
@@ -143,8 +207,12 @@ function Order() {
                         <OrderCustomer/>
                     </Form.Item>
 
-                    <Form.Item label="Исполнитель" name="performer">
-                        <OrderPerformer availablePerformers={availablePerformers} disabled={!edit}/>
+                    <Form.Item label={<PerformerLabel warning={warning}/>} name="performer">
+                        <OrderPerformer availablePerformers={availableEmployers} disabled={!edit}/>
+                    </Form.Item>
+
+                    <Form.Item label="Специализация" name="spec">
+                        <Input disabled className="input-disabled"/>
                     </Form.Item>
 
                     <Form.Item label="Фото" name="images">
@@ -173,7 +241,7 @@ function Order() {
         <Row className="comments-block">
             <Col xs={24} md={18} xxl={{span: 12, offset: 5}}>
                 <Row justify="center" className="comments-list-block">
-                    <Col xs={24}><OrderComments comments={comments}/></Col>
+                    <Col xs={24}><OrderComments comments={comments} onDelete={onCommentDelete}/></Col>
                 </Row>
                 <Row className="comments-new">
                     <Col xs={24}>

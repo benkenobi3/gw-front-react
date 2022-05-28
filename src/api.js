@@ -10,12 +10,13 @@ export const USERS_USER_URL = user_id => `${USERS_URL}${user_id}`
 
 export const EMPLOYERS_URL = API_URL + 'employers/'
 export const EMPLOYERS_ALL_URL = EMPLOYERS_URL + 'all'
+export const EMPLOYERS_AVAILABLE_URL = order_id => `${EMPLOYERS_URL}available?order=${order_id}`
 
 export const ORDERS_URL = API_URL + 'orders/'
 export const ORDERS_ALL_URL = ORDERS_URL + 'all'
 export const ORDERS_LIST_URL = ORDERS_URL + 'list'
 export const ORDERS_CREATE_URL = ORDERS_URL + 'create'
-export const ORDERS_ORDER_URL = order_id => `${ORDERS_URL}${order_id}`
+export const ORDERS_ORDER_URL = order_id => `${ORDERS_URL}${order_id}/`
 export const ORDERS_STATUS_URL = order_id => `${ORDERS_URL}${order_id}/status`
 export const ORDERS_PERFORMER_URL = order_id => `${ORDERS_URL}${order_id}/performer`
 

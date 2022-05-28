@@ -46,9 +46,9 @@ service.register({
       } else if (err.response.status === 401 && (!err.config || err.response.config.url !== AUTH_URL)) {
           forgetToken()
       }
-      console.log(err)
+      throw err
     }
-    console.log(err)
+    throw err
   }
 
 })
