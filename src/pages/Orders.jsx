@@ -32,12 +32,14 @@ function Orders() {
                     <Table.Column title={<div className="table-header montserrat">Исполнитель</div>} dataIndex='performer' key='key' render={performer => {
                         return performer ? <Link to={`/user/${performer.id}`}>{performer.first_name} {performer.last_name}</Link> : 'Не назначен'
                     }}/>
-                    <Table.Column title={<div className="table-header montserrat">Статус</div>} dataIndex='status' key='key' render={s => <StatusTag status={s}/>}/>
+                    <Table.Column title={<div className="table-header montserrat">Статус</div>} key='key' render={order => { 
+                        return <StatusTag status={order.status} status_locale={order.status_locale}/>
+                    }}/>
                 </Table>
             </Col>
             <Col xs={24} lg={0}>
                 <List dataSource={orders} renderItem={item => (
-                    <List.Item key={item.id} actions={[<StatusTag status={item.status}/>]}>
+                    <List.Item key={item.id} actions={[<StatusTag status={item.status} status_locale={item.status_locale}/>]}>
                         <List.Item.Meta
                             title={item.title}
                             description={

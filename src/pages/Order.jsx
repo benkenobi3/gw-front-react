@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { ArrowLeftOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons"
-import { Row, Col, PageHeader, Form, Input, Select, Button, Skeleton, Avatar, Tooltip } from "antd"
+import { Row, Col, PageHeader, Form, Input, Button, Skeleton, Avatar, Tooltip } from "antd"
 
 import "./Order.sass"
 import { getUser } from "../auth/user"
 import { fetchOrder, fetchComments, fetchAvailableEmployers, 
     saveComment, saveOrderStatus, saveOrderPerformer, deleteComment } from "../requests"
-import StatusTag from "../components/StatusTag"
 import OrderImages from "../components/OrderImages"
 import OrderTimeline from "../components/OrderTimeline"
 import OrderPerformer from "../components/OrderPerformer"
 import OrderCustomer from "../components/OrderCustomer"
 import OrderComments from "../components/OrderComments"
+import OrderStatus from "../components/OrderStatus"
 
 
 function Order() {
@@ -193,14 +193,7 @@ function Order() {
                     </Form.Item>
 
                     <Form.Item label="Статус" name="status">
-                        <Select disabled={!edit}>
-                            <Select.Option value="created"><StatusTag status="created"/></Select.Option>
-                            <Select.Option value="appointed"><StatusTag status="appointed"/></Select.Option>
-                            <Select.Option value="accepted"><StatusTag status="accepted"/></Select.Option>
-                            <Select.Option value="info_required"><StatusTag status="info_required"/></Select.Option>
-                            <Select.Option value="done"><StatusTag status="done"/></Select.Option>
-                            <Select.Option value="rejected"><StatusTag status="rejected"/></Select.Option>
-                        </Select>
+                        <OrderStatus disabled={!edit}/>
                     </Form.Item>
 
                     <Form.Item label="Заявитель" name="customer">

@@ -16,6 +16,7 @@ export const ORDERS_URL = API_URL + 'orders/'
 export const ORDERS_ALL_URL = ORDERS_URL + 'all'
 export const ORDERS_LIST_URL = ORDERS_URL + 'list'
 export const ORDERS_CREATE_URL = ORDERS_URL + 'create'
+export const ORDERS_STATUS_LIST_URL = ORDERS_URL + 'status-list'
 export const ORDERS_ORDER_URL = order_id => `${ORDERS_URL}${order_id}/`
 export const ORDERS_STATUS_URL = order_id => `${ORDERS_URL}${order_id}/status`
 export const ORDERS_PERFORMER_URL = order_id => `${ORDERS_URL}${order_id}/performer`
