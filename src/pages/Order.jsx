@@ -20,13 +20,15 @@ function Order() {
     const { orderId } = useParams()
 
     const [order, setOrder] = useState({})
+    const [comments, setComments] = useState([])
     const [availableEmployers, setAvailableEmployers] = useState([])
 
-    const [comments, setComments] = useState([])
-    const [commentsCreationError, setCommentsCreationError] = useState("")
+    
 
     const [edit, setEdit] = useState(false)
     const [warning, setWarning] = useState(false)
+    const [refresh, setRefresh] = useState(0)
+    const [commentsCreationError, setCommentsCreationError] = useState("")
    
     const orderFields = [
         {name: 'title', value: order.title},
@@ -96,7 +98,10 @@ function Order() {
                 console.log(data)   
         }
 
+        // trigger timeline render
+        setRefresh(r => r + 1)
         setOrder({...order, ...diff})
+        setWarning(w => !w)
         setEdit(false)
     }
 
@@ -227,7 +232,7 @@ function Order() {
             </Skeleton>
             <Col xs={24} md={{span: 5, offset: 1}} xxl={5}>
                 <Row justify="center" style={{marginTop: '95px'}}>
-                    <Col><OrderTimeline creationDatetime={order.creation_datetime}/></Col>
+                    <Col><OrderTimeline orderId={orderId} key={refresh}/></Col>
                 </Row>
             </Col>
         </Row>

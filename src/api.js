@@ -5,6 +5,9 @@ export const AUTH_REFRESH_URL = AUTH_URL + 'refresh/'
 
 export const API_URL = HOST_URL + 'api/'
 
+export const STATUS_LIST_URL = `${API_URL}status/list`
+export const TIMELINE_LIST_URL = order_id => `${API_URL}timeline/list?order=${order_id}`
+
 export const USERS_URL = API_URL + 'users/'
 export const USERS_USER_URL = user_id => `${USERS_URL}${user_id}`
 
@@ -16,7 +19,6 @@ export const ORDERS_URL = API_URL + 'orders/'
 export const ORDERS_ALL_URL = ORDERS_URL + 'all'
 export const ORDERS_LIST_URL = ORDERS_URL + 'list'
 export const ORDERS_CREATE_URL = ORDERS_URL + 'create'
-export const ORDERS_STATUS_LIST_URL = ORDERS_URL + 'status-list'
 export const ORDERS_ORDER_URL = order_id => `${ORDERS_URL}${order_id}/`
 export const ORDERS_STATUS_URL = order_id => `${ORDERS_URL}${order_id}/status`
 export const ORDERS_PERFORMER_URL = order_id => `${ORDERS_URL}${order_id}/performer`

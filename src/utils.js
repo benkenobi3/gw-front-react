@@ -21,9 +21,9 @@ export const datetimeFormat = datetimeString => {
     const days = Math.round((now.getTime() - datetime.getTime()) / (60 * 60 * 24 * 1000))
 
     if (days < 1)
-        return datetime.toLocaleTimeString()
+        return datetime.toLocaleTimeString('ru-RU', {hour: 'numeric', minute: 'numeric'})
     if (days === 1)
-        return 'yesterday'
+        return 'вчера'
     return `${days} ${getNoun(days, 'день', 'дня', 'дней')} назад`
 }
 

@@ -2,7 +2,7 @@ import axios from "axios"
 import { ORDERS_ALL_URL, ORDERS_ORDER_URL, COMMENTS_CREATE_URL, 
     EMPLOYERS_ALL_URL, COMMENTS_LIST_URL, EMPLOYERS_AVAILABLE_URL, 
     ORDERS_STATUS_URL, ORDERS_PERFORMER_URL, COMMENTS_DELETE_URL, 
-    ORDERS_STATUS_LIST_URL } from "./api"
+    STATUS_LIST_URL, TIMELINE_LIST_URL } from "./api"
 
 
 const fetchOrder = async orderId => {
@@ -56,12 +56,22 @@ const fetchAvailableEmployers = async orderId => {
 }
 
 const fetchStatusList = async () => {
-    const { data, status } = await axios.get(ORDERS_STATUS_LIST_URL)
+    const { data, status } = await axios.get(STATUS_LIST_URL)
 
     if (status !== 200)
         return []
     
     data.forEach((s) => s.key = s.status)
+    return data
+}
+
+const fetchTimelineList = async orderId => {
+    const { data, status } = await axios.get(TIMELINE_LIST_URL(orderId))
+
+    if (status !== 200)
+        return []
+    
+    data.forEach((t) => t.key = t.id)
     return data
 }
 
@@ -104,5 +114,5 @@ const deleteComment = async commentId => {
     return {data: data, err: null}
 }
 
-export { fetchOrder, fetchOrders, fetchEmployers, fetchComments, fetchAvailableEmployers, fetchStatusList,
+export { fetchOrder, fetchOrders, fetchEmployers, fetchComments, fetchAvailableEmployers, fetchStatusList, fetchTimelineList,
     saveComment, saveOrderStatus, saveOrderPerformer, deleteComment }
