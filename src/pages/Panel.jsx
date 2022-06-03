@@ -1,4 +1,4 @@
-import './Panel.sass';
+import './Panel.sass'
 
 import {
   CarryOutOutlined,
@@ -15,9 +15,10 @@ import DropdownUser from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
 import  Reports  from "./Reports"
-import  Order  from "../pages/Order"
-import  Orders  from "../pages/Orders"
-import  Employers  from "../pages/Employers"
+import  Order  from "./Order"
+import  Orders  from "./Orders"
+import  Overview  from "./Overview"
+import  Employers  from "./Employers"
 
 const { Content, Sider } = Layout;
 
@@ -37,21 +38,28 @@ function Panel() {
 
     const [collapsed, setCollapsed] = useState(false)
     const [contentTitle, setContentTitle] = useState(titles[loc.pathname])
+    const [selectedKeys, setSelectedKeys] = useState([])
 
     return (
         <Layout className="panel">
             <Sider trigger={null} collapsible collapsed={collapsed} className="panel-slider">
-                <img
-                    alt=""
-                    className="logo-image" 
-                    src="http://localhost:3000/logo.png" 
-                    style={{paddingLeft: collapsed * 16}}
-                />
+                <Link
+                    to="/panel" 
+                    onClick={() => {setContentTitle(titles['/panel']); setSelectedKeys([])}}>
+                    <img
+                        alt=""
+                        className="logo-image" 
+                        src="http://localhost:3000/logo.png" 
+                        style={{paddingLeft: collapsed * 16}}
+                    />
+                </Link>
                 <Menu
-                    theme="dark" 
+                    theme="dark"
+                    selectedKeys={selectedKeys}
                     defaultSelectedKeys={[loc.pathname]} 
                     mode="inline"
                     onClick={({key}) => setContentTitle(titles[key])}
+                    onSelect={({selectedKeys}) => setSelectedKeys(selectedKeys)}
                 >
                     <Menu.Item key="/panel/orders" icon={<CarryOutOutlined />}>
                         <Link to="/panel/orders">Заявки</Link>
@@ -79,7 +87,7 @@ function Panel() {
                     </div>
                     <div className='content-routes'>
                         <Routes>
-                            <Route path="" element={<></>}/>
+                            <Route path="" element={<Overview />}/>
                             <Route path="orders" index element={<Orders />}/>
                             <Route path="orders/:orderId" index element={<Order />}/>
                             <Route path="employers" element={<Employers />}/>
