@@ -93,24 +93,21 @@ function CreateOrder() {
                                 required={false}
                                 key={field.key}
                             >
-                            <Form.Item
-                                {...field}
-                                validateTrigger={['onChange', 'onBlur']}
-                                rules={[
-                                    {
-                                    required: true,
-                                    whitespace: true,
-                                    message: "Введите url фото или удалите это поле",
-                                    },
-                                ]}
-                                noStyle
-                            >
-                                <Input
-                                    placeholder="Url фотографии"
-                                    style={{
-                                    width: '60%',
-                                    }}
-                                />
+                                <Form.Item
+                                    {...field}
+                                    validateTrigger={['onChange', 'onBlur']}
+                                    rules={[
+                                        {
+                                        required: true,
+                                        whitespace: true,
+                                        message: "Введите url фото или удалите это поле",
+                                        },
+                                    ]}
+                                    noStyle
+                                >
+                                    <Input
+                                        placeholder="url фотографии"
+                                    />
                                 </Form.Item>
                                 {fields.length > 1 ? (
                                 <MinusOutlined
