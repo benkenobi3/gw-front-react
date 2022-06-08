@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { ArrowLeftOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons"
-import { Row, Col, PageHeader, Form, Input } from "antd"
+import { ArrowLeftOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
+import { Row, Col, PageHeader, Form, Input, Button } from "antd"
 
-import "./Order.sass"
+import "./CreateOrder.sass"
 import { getUser } from "../auth/user"
 import { saveOrderStatus, saveOrderPerformer} from "../requests"
 import OrderImages from "../components/OrderImages"
@@ -14,6 +14,8 @@ function CreateOrder() {
     const user = getUser()
 
     const [order, setOrder] = useState({})
+
+    
     
     const orderFields = [
         {name: 'title', value: ''},
@@ -33,6 +35,14 @@ function CreateOrder() {
         labelAlign: 'left',
         labelCol: {xs: {span: 24}, sm: {span: 4}, xxl: {span: 3}},
         wrapperCol: {xs: {span: 24}, sm: {span: 20}, xxl: {span: 21}},
+    }
+
+    const formItemLayoutWithOutLabel = {
+        wrapperCol: {
+            xs: {span: 24}, 
+            sm: {span: 20, offset: 4}, 
+            xxl: {span: 21, offset: 3}
+        },
     }
  
     return (
@@ -61,9 +71,72 @@ function CreateOrder() {
                         <OrderSpecs />
                     </Form.Item>
 
-                    <Form.Item label="Фото" name="images">
-                        <OrderImages/>
-                    </Form.Item>
+                    <Form.List
+                        label="Фото" 
+                        name="images"
+                        rules={[
+                        {
+                            validator: async (_, names) => {
+                            if (!names || names.length < 1) {
+                                return Promise.reject(new Error('Требуется хотя бы одно фото'));
+                            }
+                            },
+                        },
+                        ]}
+                    >
+                        {(fields, { add, remove }, { errors }) => (
+                        <>
+                            {fields.map((field, index) => (
+                            <Form.Item
+                                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                label={index === 0 ? 'Фото' : ''}
+                                required={false}
+                                key={field.key}
+                            >
+                            <Form.Item
+                                {...field}
+                                validateTrigger={['onChange', 'onBlur']}
+                                rules={[
+                                    {
+                                    required: true,
+                                    whitespace: true,
+                                    message: "Введите url фото или удалите это поле",
+                                    },
+                                ]}
+                                noStyle
+                            >
+                                <Input
+                                    placeholder="Url фотографии"
+                                    style={{
+                                    width: '60%',
+                                    }}
+                                />
+                                </Form.Item>
+                                {fields.length > 1 ? (
+                                <MinusOutlined
+                                    className="dynamic-delete-button"
+                                    onClick={() => remove(field.name)}
+                                />
+                                ) : null}
+                            </Form.Item>
+                            ))}
+                            <Form.Item {...formItemLayoutWithOutLabel}>
+                                <Button
+                                    type="dashed"
+                                    onClick={() => add()}
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    icon={<PlusOutlined />}
+                                >
+                                    Добавить фото
+                                </Button>
+                                <Form.ErrorList errors={errors} />
+                            </Form.Item>
+                        </>
+                        )}
+                    </Form.List>
+
                 </Form>
             </Col>
         </Row>
