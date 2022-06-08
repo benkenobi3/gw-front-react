@@ -19,7 +19,7 @@ function App() {
         <Route path="login" element={<Login />}/>
         <Route path="panel/*"
           element={
-            <Protected redirect="/login?next=panel">
+            <Protected>
               <Panel />
             </Protected>
           }

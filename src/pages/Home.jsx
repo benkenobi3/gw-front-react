@@ -38,7 +38,7 @@ function Home() {
             </Row>
             <Row justify="space-around" align="middle">
                 <Col>
-                    <Link to="/panel">
+                    <Link to="/panel/create">
                         <Button type="primary" size="large" style={{fontSize: '1.8em', height: '100%'}}>
                             Подать заявку
                         </Button>

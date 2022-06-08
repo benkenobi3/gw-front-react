@@ -23,8 +23,6 @@ function Order() {
     const [comments, setComments] = useState([])
     const [availableEmployers, setAvailableEmployers] = useState([])
 
-    
-
     const [edit, setEdit] = useState(false)
     const [warning, setWarning] = useState(false)
     const [refresh, setRefresh] = useState(0)
@@ -36,7 +34,8 @@ function Order() {
         {name: 'description', value: order.description},
         {name: 'performer', value: order.performer ? order.performer.id : -1},
         {name: 'customer', value: order.customer},
-        {name: 'spec', value: order.perf_spec ? order.perf_spec.title : ''}
+        {name: 'spec', value: order.perf_spec ? order.perf_spec.title : ''},
+        {name: 'images', value: order.images}
     ]
 
     const commentsFields = [

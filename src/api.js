@@ -6,7 +6,12 @@ export const AUTH_REFRESH_URL = AUTH_URL + 'refresh/'
 export const API_URL = HOST_URL + 'api/'
 
 export const STATUS_LIST_URL = `${API_URL}status/list`
+export const SPECIALIZATION_LIST_URL = `${API_URL}specialization/list`
 export const TIMELINE_LIST_URL = order_id => `${API_URL}timeline/list?order=${order_id}`
+
+export const CHARS_URL = `${API_URL}charts/`
+export const CHARTS_BUSY_URL = `${CHARS_URL}busy`
+export const CHARTS_STATUS_URL = `${CHARS_URL}status`
 
 export const USERS_URL = API_URL + 'users/'
 export const USERS_USER_URL = user_id => `${USERS_URL}${user_id}`

@@ -19,6 +19,7 @@ import  Order  from "./Order"
 import  Orders  from "./Orders"
 import  Overview  from "./Overview"
 import  Employers  from "./Employers"
+import  CreateOrder from "./CreateOrder"
 
 const { Content, Sider } = Layout;
 
@@ -87,9 +88,10 @@ function Panel() {
                     </div>
                     <div className='content-routes'>
                         <Routes>
-                            <Route path="" element={<Overview />}/>
-                            <Route path="orders" index element={<Orders />}/>
-                            <Route path="orders/:orderId" index element={<Order />}/>
+                            <Route path="" index element={<Overview />}/>
+                            <Route path="create" index element={<CreateOrder />}/>
+                            <Route path="orders" element={<Orders />}/>
+                            <Route path="orders/:orderId" element={<Order />}/>
                             <Route path="employers" element={<Employers />}/>
                             <Route path="reports" element={<Reports />}/>
                         </Routes>

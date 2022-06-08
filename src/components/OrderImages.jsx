@@ -3,12 +3,17 @@ import { Image, Button } from "antd"
 import { IMAGE_FALLBACK } from "../utils"
 
 
-function OrderImages({images}) {
+function OrderImages({value}) {
 
     const [visible, setVisible] = useState(false)
 
-    if (!images)
-        return <></>
+    if (value !== undefined) {
+        if (value.length < 1)
+            return <></>
+    }
+    else return <></>
+
+    const images = value
 
     if (images.length === 1)
         return (

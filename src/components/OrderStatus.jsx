@@ -23,7 +23,7 @@ function OrderStatus({disabled, value, onSelect, onChange}) {
 
     useEffect(() => {
         memoStatusList()
-    })
+    }, [])
 
     const options = []
     for (let s of statusList)
