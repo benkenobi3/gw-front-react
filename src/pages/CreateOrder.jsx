@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { ArrowLeftOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
 import { Row, Col, PageHeader, Form, Input, Button } from "antd"
 
@@ -13,10 +13,8 @@ import OrderSpecs from "../components/OrderSpecs"
 function CreateOrder() {
     const user = getUser()
 
-    const [order, setOrder] = useState({})
+    const navigate = useNavigate()
 
-    
-    
     const orderFields = [
         {name: 'title', value: ''},
         {name: 'description', value: ''},
@@ -26,9 +24,7 @@ function CreateOrder() {
     ]
 
     const createOrder = async values => {
-        const diff = {}
-
-        setOrder({...order, ...diff})
+        navigate('../orders', {replace: true})
     }
 
     const formItemLayout = {
@@ -44,6 +40,25 @@ function CreateOrder() {
             xxl: {span: 21, offset: 3}
         },
     }
+
+    const formRequiredField = {
+        rules: [
+            {
+              required: true,
+              message: 'Это поле не может быть пустым!',
+            },
+        ]
+    }
+
+    const formSpecRequiredfield = {
+        rules: [{
+            validator: async (_, value) => {
+                if (!value || value < 2) {
+                    return Promise.reject(new Error("Требуется указать специализацию"))
+                }
+            },
+        }]
+    }
  
     return (
         <div className="order">
@@ -55,11 +70,11 @@ function CreateOrder() {
                     onBack={() => window.history.back()}
                 />
                 <Form name="show-order" size="large" fields={orderFields} {...formItemLayout} onFinish={createOrder}>
-                    <Form.Item label="Проблема" name="title">
+                    <Form.Item label="Проблема" name="title" {...formRequiredField}>
                         <Input/>
                     </Form.Item>
 
-                    <Form.Item label="Описание" name="description">
+                    <Form.Item label="Описание" name="description" {...formRequiredField}>
                         <Input.TextArea rows={3}/>
                     </Form.Item>
 
@@ -67,7 +82,7 @@ function CreateOrder() {
                         <OrderCustomer/>
                     </Form.Item>
 
-                    <Form.Item label="Специализация" name="perf_spec">
+                    <Form.Item label="Специализация" name="perf_spec" required={true} {...formSpecRequiredfield}>
                         <OrderSpecs />
                     </Form.Item>
 
@@ -77,9 +92,9 @@ function CreateOrder() {
                         rules={[
                         {
                             validator: async (_, names) => {
-                            if (!names || names.length < 1) {
-                                return Promise.reject(new Error('Требуется хотя бы одно фото'));
-                            }
+                                if (!names || names.length < 1) {
+                                    return Promise.reject(new Error('Требуется хотя бы одно фото'));
+                                }
                             },
                         },
                         ]}
@@ -133,7 +148,13 @@ function CreateOrder() {
                         </>
                         )}
                     </Form.List>
-
+                    <Row>
+                        <Col xs={24} style={{textAlign: "end"}}>
+                            <Button type="primary" htmlType="submit">
+                                Создать заявку
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form>
             </Col>
         </Row>
