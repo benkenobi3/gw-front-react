@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeftOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
 import { Row, Col, PageHeader, Form, Input, Button } from "antd"
 
 import "./CreateOrder.sass"
 import { getUser } from "../auth/user"
-import { saveOrderStatus, saveOrderPerformer} from "../requests"
-import OrderImages from "../components/OrderImages"
+import { saveOrder } from "../requests"
 import OrderCustomer from "../components/OrderCustomer"
 import OrderSpecs from "../components/OrderSpecs"
 
@@ -24,6 +22,8 @@ function CreateOrder() {
     ]
 
     const createOrder = async values => {
+        values.images = values.images.map(el => {return {'url': el}})
+        const {data, err} = saveOrder(values)
         navigate('../orders', {replace: true})
     }
 
