@@ -3,7 +3,7 @@ import { ORDERS_ALL_URL, ORDERS_ORDER_URL, COMMENTS_CREATE_URL,
     EMPLOYERS_ALL_URL, COMMENTS_LIST_URL, EMPLOYERS_AVAILABLE_URL, 
     ORDERS_STATUS_URL, ORDERS_PERFORMER_URL, COMMENTS_DELETE_URL, 
     STATUS_LIST_URL, TIMELINE_LIST_URL, CHARTS_BUSY_URL, 
-    CHARTS_STATUS_URL, SPECIALIZATION_LIST_URL, ORDERS_CREATE_URL } from "./api"
+    CHARTS_STATUS_URL, SPECIALIZATION_LIST_URL, ORDERS_CREATE_URL, USERS_USER_URL } from "./api"
 
 
 const fetchOrder = async orderId => {
@@ -105,6 +105,15 @@ const fetchTimelineList = async orderId => {
     return data
 }
 
+const fetchUserProfile = async userId => {
+    const { data, status } = await axios.get(USERS_USER_URL(userId))
+    if (status !== 200)
+        return {data: {}, err: data}
+
+    data.key = data.id
+    return {data: data, err: null}
+}
+
 const saveOrderStatus = async (orderId, statusId) => {
     const { data, status } = await axios.post(ORDERS_STATUS_URL(orderId), {'status': statusId})
 
@@ -155,4 +164,4 @@ const deleteComment = async commentId => {
 }
 
 export { fetchOrder, fetchOrders, fetchEmployers, fetchComments, fetchAvailableEmployers, fetchStatusList, fetchTimelineList,
-    saveComment, saveOrderStatus, saveOrderPerformer, saveOrder, deleteComment, fetchBusyChart, fetchStatusChart, fetchSpecList }
+    saveComment, saveOrderStatus, saveOrderPerformer, saveOrder, deleteComment, fetchBusyChart, fetchStatusChart, fetchSpecList, fetchUserProfile }

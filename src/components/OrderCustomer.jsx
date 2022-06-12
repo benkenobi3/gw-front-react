@@ -8,7 +8,7 @@ function OrderCustomer({value}) {
         return <Input disabled></Input>
 
     const name = `${value.first_name} ${value.last_name}`
-    const selectValue = <>{name} <Link to={"/user/" + value.id}><LinkOutlined /></Link></>
+    const selectValue = <>{name} <Link to={"panel/user/" + value.id}><LinkOutlined /></Link></>
 
     return (
         <Select disabled showArrow={false} value={0} dropdownRender={()=>""}>

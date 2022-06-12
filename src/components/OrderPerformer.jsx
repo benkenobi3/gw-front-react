@@ -13,7 +13,7 @@ function OrderPerformer({availablePerformers, disabled, value, onSelect, onChang
     for (let p of availablePerformers)
         options.push(
             <Select.Option value={p.id} key={p.id}>
-                {`${p.first_name} ${p.last_name}`} <Link to={"/user/" + p.id}><LinkOutlined /></Link>
+                {`${p.first_name} ${p.last_name}`} <Link to={"panel/user/" + p.id}><LinkOutlined /></Link>
             </Select.Option>
         )
 

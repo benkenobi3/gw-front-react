@@ -5,9 +5,10 @@ import {
   FileOutlined,
   TeamOutlined,
   DoubleLeftOutlined,
-  AreaChartOutlined
+  AreaChartOutlined,
+  PlusSquareOutlined
 } from '@ant-design/icons';
-import { PageHeader, Layout, Menu } from 'antd';
+import { PageHeader, Layout, Menu, Button, Row, Col } from 'antd';
 import { useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import  Orders  from "./Orders"
 import  Overview  from "./Overview"
 import  Employers  from "./Employers"
 import  CreateOrder from "./CreateOrder"
+import User from './User';
 
 const { Content, Sider } = Layout;
 
@@ -72,6 +74,10 @@ function Panel() {
                         <Link to="/panel/reports">Отчеты</Link>
                     </Menu.Item>
                 </Menu>
+                <div className='d'></div>
+                <Link to="/panel/create" className='create-button-link' style={{paddingLeft: collapsed * 8}}>
+                    { !collapsed ? <Button type="primary">Создать заявку</Button> : <PlusSquareOutlined/>}
+                </Link>
             </Sider>
             <Layout className="site-layout">
                 <PageHeader className="panel-header back-color"
@@ -93,7 +99,8 @@ function Panel() {
                             <Route path="orders" element={<Orders />}/>
                             <Route path="orders/:orderId" element={<Order />}/>
                             <Route path="employers" element={<Employers />}/>
-                            <Route path="reports" element={<Reports />}/>
+                            {/* <Route path="reports" element={<Reports />}/> */}
+                            <Route path="user/:userId" element={<User />}/>
                         </Routes>
                     </div>
                 </Content>

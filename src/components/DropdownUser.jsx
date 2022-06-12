@@ -6,8 +6,8 @@ import { forgetToken } from "../auth/auth"
 const dropdownContent = (uid) => {
     return (
         <Menu>
-            <Menu.Item key={"/user/" + uid}>
-                <Link to={"/user/" + uid} className="dropdown-item">Профиль</Link>
+            <Menu.Item key={"/panel/user/" + uid}>
+                <Link to={"/panel/user/" + uid} className="dropdown-item">Профиль</Link>
             </Menu.Item>
             <Menu.Item danger key="forgetToken">
                 <a onClick={e => {

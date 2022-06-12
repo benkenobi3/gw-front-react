@@ -19,7 +19,7 @@ function OrderComments({comments, onDelete}) {
 
         const author = (
             <Link
-                to={'user/' + c.user.id} 
+                to={'panel/user' + c.user.id} 
                 style={{lineHeight: '38px', fontSize: '16px'}}
             >
                 {`${c.user.first_name} ${c.user.last_name}`}
