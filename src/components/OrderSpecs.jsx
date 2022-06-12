@@ -16,9 +16,11 @@ function OrderSpecs({disabled, value, onSelect, onChange}) {
         }
         
         const value = await fetchSpecList()
-        if (value)
+        if (value) {
             cache.set('spec_list', value)
-        setSpecs(value)
+            setSpecs(value)
+        }
+        
     }
 
     useEffect(() => {

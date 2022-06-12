@@ -15,7 +15,6 @@ import { Link, Route, Routes } from 'react-router-dom';
 import DropdownUser from "../components/DropdownUser"
 import { getUser } from '../auth/user';
 
-import  Reports  from "./Reports"
 import  Order  from "./Order"
 import  Orders  from "./Orders"
 import  Overview  from "./Overview"
@@ -69,9 +68,6 @@ function Panel() {
                     </Menu.Item>
                     <Menu.Item key="/panel/employers" icon={<TeamOutlined />}>
                         <Link to="/panel/employers">Сотрудники</Link>
-                    </Menu.Item>
-                    <Menu.Item key="/panel/reports" icon={<FileOutlined />}>
-                        <Link to="/panel/reports">Отчеты</Link>
                     </Menu.Item>
                 </Menu>
                 <div className='d'></div>

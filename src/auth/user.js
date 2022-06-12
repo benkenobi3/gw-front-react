@@ -18,7 +18,8 @@ const getUser = () => {
             username: jwt.username,
             first_name: jwt.first_name,
             last_name: jwt.last_name,
-            id: jwt.user_id
+            id: jwt.user_id,
+            role: jwt.role,
         }
     }
 

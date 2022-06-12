@@ -4,9 +4,12 @@ import {Link} from "react-router-dom"
 
 import "./Home.sass"
 import Header from "../components/Header"
+import { getUser } from '../auth/user'
 
 
 function Home() {
+    const user = getUser()
+
     const specs = ['сантехник', 'плотник', 'электрик']
     const [spec_id, setSpecId] = useState(0)
 
@@ -18,6 +21,25 @@ function Home() {
 
         return () => clearInterval(interval)
     }, [specs.length])
+
+    const MainButton = () => {
+        if (user && user.role && (user.role === 'admin' || user.role === 'performer')) {
+            return (
+                <Link to="/panel">
+                    <Button type="primary" size="large" style={{fontSize: '1.8em', height: '100%'}}>
+                        Войти в панель
+                    </Button>
+                </Link>
+            )
+        }
+        return (
+            <Link to="/panel/create">
+                <Button type="primary" size="large" style={{fontSize: '1.8em', height: '100%'}}>
+                    Подать заявку
+                </Button>
+            </Link>
+        )
+    }
 
     return (
         <div className="home">
@@ -38,11 +60,7 @@ function Home() {
             </Row>
             <Row justify="space-around" align="middle">
                 <Col>
-                    <Link to="/panel/create">
-                        <Button type="primary" size="large" style={{fontSize: '1.8em', height: '100%'}}>
-                            Подать заявку
-                        </Button>
-                    </Link>
+                    <MainButton />
                 </Col>
             </Row>
             <div className="wave"></div>
