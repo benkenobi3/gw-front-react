@@ -13,7 +13,7 @@ function Header() {
         <Row justify="space-around" align="middle" className="header">
             <Col>
                 <Link to="/">
-                    <img className="logo-image" src="http://localhost:3000/logo-text.png"/>
+                    <img className="logo-image" src="/logo-text.png"/>
                 </Link>
             </Col>
             <Col>

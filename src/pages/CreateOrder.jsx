@@ -7,6 +7,7 @@ import { getUser } from "../auth/user"
 import { saveOrder } from "../requests"
 import OrderCustomer from "../components/OrderCustomer"
 import OrderSpecs from "../components/OrderSpecs"
+import OrderAddress from "../components/OrderAddress"
 
 function CreateOrder() {
     const user = getUser()
@@ -18,7 +19,9 @@ function CreateOrder() {
         {name: 'description', value: ''},
         {name: 'customer', value: user},
         {name: 'perf_spec', value: 1},
-        {name: 'images', value: []}
+        {name: 'images', value: []},
+        {name: 'address', value: 0},
+        {name: 'flat_number', value: ''}
     ]
 
     const createOrder = async values => {
@@ -59,6 +62,16 @@ function CreateOrder() {
             },
         }]
     }
+
+    const formAddressRequiredField = {
+        rules: [{
+            validator: async (_, value) => {
+                if (!value || value < 1) {
+                    return Promise.reject(new Error("Требуется указать адрес"))
+                }
+            },
+        }]
+    }
  
     return (
         <div className="order">
@@ -76,6 +89,14 @@ function CreateOrder() {
 
                     <Form.Item label="Описание" name="description" {...formRequiredField}>
                         <Input.TextArea rows={3}/>
+                    </Form.Item>
+
+                    <Form.Item label="Адрес" name="address" required={true} {...formAddressRequiredField}>
+                        <OrderAddress/>
+                    </Form.Item>
+
+                    <Form.Item label="Квартира\Комната" name="flat_number" {...formRequiredField}>
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item label="Заявитель" name="customer">

@@ -13,6 +13,7 @@ import OrderPerformer from "../components/OrderPerformer"
 import OrderCustomer from "../components/OrderCustomer"
 import OrderComments from "../components/OrderComments"
 import OrderStatus from "../components/OrderStatus"
+import OrderAddress from "../components/OrderAddress"
 
 
 function Order() {
@@ -35,7 +36,9 @@ function Order() {
         {name: 'performer', value: order.performer ? order.performer.id : -1},
         {name: 'customer', value: order.customer},
         {name: 'spec', value: order.perf_spec ? order.perf_spec.title : ''},
-        {name: 'images', value: order.images}
+        {name: 'images', value: order.images},
+        {name: 'address', value: order.address ? order.address.id : 0},
+        {name: 'room', value: order.flat_number}
     ]
 
     const commentsFields = [
@@ -194,6 +197,14 @@ function Order() {
 
                     <Form.Item label="Описание" name="description">
                         <Input.TextArea disabled className="input-disabled" rows={3}/>
+                    </Form.Item>
+
+                    <Form.Item label="Адрес" name="address">
+                        <OrderAddress disabled={true}/>
+                    </Form.Item>
+
+                    <Form.Item label="Квартира\Комната" name="room">
+                        <Input disabled className="input-disabled"/>
                     </Form.Item>
 
                     <Form.Item label="Статус" name="status">

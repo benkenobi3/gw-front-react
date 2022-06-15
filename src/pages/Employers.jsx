@@ -24,7 +24,7 @@ function Employers() {
             <Col xs={0} lg={24}>
                 <Table dataSource={employers} pagination={{ position: ['bottomCenter'] }}>
                     <Table.Column title={<div className="table-header">Имя, Фамилия</div>} key='key' render={employer => {
-                        return <Link to={`panel/user/${employer.key}`}>{employer.first_name} {employer.last_name}</Link>
+                        return <Link to={`/panel/user/${employer.key}`}>{employer.first_name} {employer.last_name}</Link>
                     }}/>
                     <Table.Column title={<div className="table-header">Специальность</div>} dataIndex='spec' key='key' render={spec => {
                         return <div className='truncate-text'>{specNames[spec.name]}</div>

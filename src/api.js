@@ -1,4 +1,4 @@
-export const HOST_URL = 'http://localhost:8000'
+export const HOST_URL = 'http://localhost:5000'
 
 export const AUTH_URL = HOST_URL + '/auth/token/'
 export const AUTH_REFRESH_URL = AUTH_URL + 'refresh/'
@@ -6,6 +6,7 @@ export const AUTH_REFRESH_URL = AUTH_URL + 'refresh/'
 export const API_URL = HOST_URL + '/api'
 
 export const STATUS_LIST_URL = `${API_URL}/status/list`
+export const ADDRESS_LIST_URL = `${API_URL}/address/list`
 export const SPECIALIZATION_LIST_URL = `${API_URL}/specialization/list`
 export const TIMELINE_LIST_URL = order_id => `${API_URL}/timeline/list?order=${order_id}`
 

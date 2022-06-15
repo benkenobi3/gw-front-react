@@ -51,7 +51,7 @@ function Panel() {
                     <img
                         alt=""
                         className="logo-image" 
-                        src="http://localhost:3000/logo.png" 
+                        src="/logo.png" 
                         style={{paddingLeft: collapsed * 16}}
                     />
                 </Link>
