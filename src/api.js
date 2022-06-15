@@ -1,4 +1,4 @@
-export const HOST_URL = 'http://localhost:5000'
+export const HOST_URL = 'http://backend:5000'
 
 export const AUTH_URL = HOST_URL + '/auth/token/'
 export const AUTH_REFRESH_URL = AUTH_URL + 'refresh/'
