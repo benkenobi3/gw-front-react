@@ -27,10 +27,10 @@ function Orders() {
                         return <div className='truncate-text'>{description}</div>
                     }}/>
                     <Table.Column title={<div className="table-header montserrat">Заявитель</div>} dataIndex='customer' key='key' render={customer => {
-                        return <Link to={`panel/user/${customer.id}`}>{customer.first_name} {customer.last_name}</Link> 
+                        return <Link to={`/panel/user/${customer.id}`}>{customer.first_name} {customer.last_name}</Link> 
                     }}/>
                     <Table.Column title={<div className="table-header montserrat">Исполнитель</div>} dataIndex='performer' key='key' render={performer => {
-                        return performer ? <Link to={`panel/user/${performer.id}`}>{performer.first_name} {performer.last_name}</Link> : 'Не назначен'
+                        return performer ? <Link to={`/panel/user/${performer.id}`}>{performer.first_name} {performer.last_name}</Link> : 'Не назначен'
                     }}/>
                     <Table.Column title={<div className="table-header montserrat">Статус</div>} key='key' render={order => { 
                         return <StatusTag status={order.status} status_locale={order.status_locale}/>

@@ -264,7 +264,7 @@ function Order() {
                             </Form.Item>
 
                             <Row align="middle">
-                                <Col xs={24} md={3}>
+                                <Col xs={24} md={5} xxl={3}>
                                     <Button size="default" htmlType="submit" className="comments-button">
                                         Опубликовать
                                     </Button>
