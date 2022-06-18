@@ -70,34 +70,39 @@ function Order() {
     const updateOrder = async values => {
         const diff = {}
 
-        if (values.performer > 0) {
+        if (values.status !== order.status) {
+            const {data, err} = await saveOrderStatus(order.id, values.status)
+            if (!err)
+                diff.status = data.status
+            else
+                console.log(data)
+        }
 
-            const currentPerformer = order.performer ? order.performer.id : -1
-            if ( currentPerformer !== values.performer) {
-                const {data, err} = await saveOrderPerformer(order.id, values.performer)
+        let performer_id = order.performer ? order.performer.id : -1
+        if (values.performer !== performer_id) {
+            console.log(values.performer)
+            console.log(order.performer)
+            if (values.performer > 0) {
+                const currentPerformer = order.performer ? order.performer.id : -1
+                if ( currentPerformer !== values.performer) {
+                    const {data, err} = await saveOrderPerformer(order.id, values.performer)
+                    if (!err) {
+                        diff.performer = availableEmployers.find(perf => perf.id === values.performer)
+                        diff.status = 'appointed'
+                    }
+                    else
+                        console.log(data)   
+                }
+            }
+            else {
+                const {data, err} = await saveOrderPerformer(order.id, null)
                 if (!err) {
-                    diff.performer = availableEmployers.find(perf => perf.id === values.performer)
-                    diff.status = 'appointed'
+                    diff.performer = undefined
+                    diff.status = 'created'
                 }
                 else
                     console.log(data)   
             }
-            else if (values.status !== order.status) {
-                const {data, err} = await saveOrderStatus(order.id, values.status)
-                if (!err)
-                    diff.status = data.status
-                else
-                    console.log(data)
-            }
-        }
-        else {
-            const {data, err} = await saveOrderPerformer(order.id, null)
-            if (!err) {
-                diff.performer = undefined
-                diff.status = 'created'
-            }
-            else
-                console.log(data)   
         }
 
         // trigger timeline render
