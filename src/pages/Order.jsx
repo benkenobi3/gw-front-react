@@ -14,6 +14,7 @@ import OrderCustomer from "../components/OrderCustomer"
 import OrderComments from "../components/OrderComments"
 import OrderStatus from "../components/OrderStatus"
 import OrderAddress from "../components/OrderAddress"
+import OrderTargetDatetime from "../components/OrderTargetDatetime"
 
 
 function Order() {
@@ -38,7 +39,8 @@ function Order() {
         {name: 'spec', value: order.perf_spec ? order.perf_spec.title : ''},
         {name: 'images', value: order.images},
         {name: 'address', value: order.address ? order.address.id : 0},
-        {name: 'room', value: order.flat_number}
+        {name: 'room', value: order.flat_number},
+        {name: 'datetime', value: {target: order.target_datetime, creation: order.creation_datetime}}
     ]
 
     const commentsFields = [
@@ -196,6 +198,10 @@ function Order() {
                     onBack={() => window.history.back()}
                 />
                 <Form name="show-order" size="large" fields={orderFields} {...formItemLayout} onFinish={updateOrder}>
+                    <Form.Item label="Проблема" name="target">
+                        <OrderTargetDatetime />
+                    </Form.Item>
+
                     <Form.Item label="Проблема" name="title">
                         <Input disabled className="input-disabled"/>
                     </Form.Item>
