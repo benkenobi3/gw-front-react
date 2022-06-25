@@ -198,7 +198,7 @@ function Order() {
                     onBack={() => window.history.back()}
                 />
                 <Form name="show-order" size="large" fields={orderFields} {...formItemLayout} onFinish={updateOrder}>
-                    <Form.Item label="Проблема" name="target">
+                    <Form.Item label="Контрольный срок" name="datetime">
                         <OrderTargetDatetime />
                     </Form.Item>
 
